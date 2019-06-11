@@ -1,6 +1,6 @@
 #TERM="screen-256color"
 #export TERM
-TERMINAL="uxterm"
+TERMINAL="st"
 export TERMINAL
 
 #PS1='\e[0;33m(\u) >_ \e[0;33m(\W)\e[0m '
@@ -78,7 +78,7 @@ export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
 export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 export GROFF_NO_SGR=1                  # for konsole and gnome-terminal
 
-if [ "$TMUX" == "" ]; then 
+if [ -z "$TMUX" ]; then 
     tmux a -t Main || tmux new -s Main
 fi
 

@@ -27,3 +27,5 @@ ln -sfn ${PWD}/.bashrc ${HOME}
 ln -sfn ${PWD}/.tmux.conf  ${HOME}
 ln -sfn ${PWD}/.vimrc ${HOME}
 ln -sfn ${PWD}/.xinitrc ${HOME}
+ln -sfn ${PWD}/i3/ ${HOME}/.config/
+

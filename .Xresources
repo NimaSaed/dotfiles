@@ -39,20 +39,20 @@ Xft.dpi: 120
 *.color15:      #c5c8c6
 
 
-UXTerm.vt100.faceName: Liberation Mono:antialias=true:autohint=true
-UXTerm.vt100.faceSize:12
-
-UXTerm.vt100.Translations: #override \
-    Ctrl Shift <Key>V: insert-selection(CLIPBOARD) \n\
-    Ctrl Shift <Key>C: copy-selection(CLIPBOARD) \n\
-    Ctrl <Key>minus: smaller-vt-font() \n\
-    Ctrl <Key>plus: larger-vt-font()
-
-UXTerm.vt100.renderFont: true    
-UXTerm.termName: xterm-256color
-UXTerm.vt100.locale: true
-UXTerm.vt100.metaSendsEscape: true
-UXTerm.vt100.backarrowKey: false
-UXTerm.ttyModes: erase ^?
-UXTerm.vt100.internalBorder:20
-UXTerm.borderWidth:0
+!UXTerm.vt100.faceName: Liberation Mono:antialias=true:autohint=true
+!UXTerm.vt100.faceSize:12
+!
+!UXTerm.vt100.Translations: #override \
+!    Ctrl Shift <Key>V: insert-selection(CLIPBOARD) \n\
+!    Ctrl Shift <Key>C: copy-selection(CLIPBOARD) \n\
+!    Ctrl <Key>minus: smaller-vt-font() \n\
+!    Ctrl <Key>plus: larger-vt-font()
+!
+!UXTerm.vt100.renderFont: true    
+!UXTerm.termName: xterm-256color
+!UXTerm.vt100.locale: true
+!UXTerm.vt100.metaSendsEscape: true
+!UXTerm.vt100.backarrowKey: false
+!UXTerm.ttyModes: erase ^?
+!UXTerm.vt100.internalBorder:20
+!UXTerm.borderWidth:0

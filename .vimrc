@@ -5,11 +5,9 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'wellle/targets.vim'
 Plug 'davidhalter/jedi-vim'
-"Plug 'plasticboy/vim-markdown'
 Plug 'w0ng/vim-hybrid'
 Plug 'iamcco/markdown-preview.vim'
 Plug 'junegunn/goyo.vim'
-Plug 'WolfgangMehner/bash-support'
 
 call plug#end()
 """""""""""""""""""""""""""
@@ -201,3 +199,8 @@ map <leader>d ci[x<Esc>0
 map <leader>o ci[o<Esc>0
 " Mark task as move forward
 map <leader>m 0f[dwdwi> <Esc>0
+
+"================================================================================
+" To add banner list this  
+"================================================================================
+autocmd Filetype * inoremap \ban <Esc>80i=<Esc>A<Enter><Enter><Esc>80i=<Esc>k^i<space>
