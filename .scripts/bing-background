@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+urlpath=$( \
+curl "https://www.bing.com/HPImageArchive.aspx?format=rss&idx=0&n=1" \
+| xmllint --xpath "/rss/channel/item/link/text()" - \
+| sed 's/1366x768/1920x1080/g' \
+)
+
+curl "https://www.bing.com$urlpath" -o /tmp/.wallpaper
+result=$?
+if (($result==0)); then
+    feh --bg-fill --no-fehbg /tmp/.wallpaper     
+else 
+    feh --bg-fill --no-fehbg ~/.wallpaper
+fi

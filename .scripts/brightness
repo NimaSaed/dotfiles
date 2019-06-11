@@ -1,0 +1,30 @@
+#!/usr/bin/env  bash
+arg=$1
+brfile=/sys/class/backlight/intel_backlight/brightness
+br=$(cat /sys/class/backlight/intel_backlight/brightness)
+maxbr=$(cat /sys/class/backlight/intel_backlight/max_brightness)
+if [ "$arg" == "h" ]; then
+    newbr=$(bc <<< $br+450)
+    echo $maxbr $newbr
+    echo $arg
+    if [ "$maxbr" -ge "$newbr" ]; then
+        echo $newbr > $brfile 
+    else
+        exit;
+    fi
+elif [ "$arg" == "l" ]; then
+    newbr=$(bc <<< $br-450)
+    echo $maxbr $newbr
+    echo $arg
+    if [ $newbr -le "0" ]; then 
+        echo 0 > $brfile
+    else 
+        echo $newbr > $brfile
+    fi
+elif [ "$arg" == "0" ]; then
+    echo 450 > $brfile;
+elif [ "$arg" == "b" ]; then
+    echo 0 > $brfile;
+else 
+    echo "wrong input, l for low, h for high"
+fi

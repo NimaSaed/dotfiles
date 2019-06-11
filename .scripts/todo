@@ -1,0 +1,15 @@
+#!/bin/env bash
+
+arg=$1
+
+if [ "$arg" == "" ]; then
+    vim  "/home/nima/Dropbox/Notes/Inbox/$(date '+%Y-%m-%d-todo.md')";
+elif [ "$arg" == "-d" ]; then    
+    day=$(expr $(date +%d) - $2)
+    if [ "$day" -lt "10" ]; then 
+        day="0"$day;
+    fi
+    vim  "/home/nima/Dropbox/Notes/Inbox/$(date '+%Y-%m-')$day-todo.md";
+else 
+    echo "error"
+fi

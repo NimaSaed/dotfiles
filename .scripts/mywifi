@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+#sudo systemctl start wpa_supplicant.service
+wpa_supplicant -D nl80211 -i wlp58s0 -c /home/nima/Dropbox/Work/DS-things/wpa_supplicant-nl80211-wlp58s0.conf 

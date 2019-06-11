@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+cd /home/nima/Projects/documentation/
+git pull
+git add docs/2019-Q2.md
+git commit -m "updated 2019 Q2 report"
+git push
+cd /home/nima

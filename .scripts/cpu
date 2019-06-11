@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+value=$(mpstat 1 4| grep Average | awk {'print substr(100-$12,0,5)'})
+printf " %2.2f%%" $value 
+#echo -n "" $value

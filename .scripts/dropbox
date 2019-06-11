@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+dropbox_icon="";
+
+status=$(dropbox-cli status);
+
+if [ "$status" == "Dropbox isn't running!" ]; then 
+    result="";
+    color="#de935f"
+else
+    result=$dropbox_icon;
+    color="#5f819d"
+fi
+echo -n "<span color='$color'> $result </span>"

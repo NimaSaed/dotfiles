@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+filename=$1
+#pandoc -t revealjs -s -o $filename\.html $filename -V \
+#        revealjs-url=http://lab.hakim.se/reveal-js 
+#qutebrowser $filename\.html
+#rm $filename\.html
+#
+#pandoc file.md -t beamer -o out.pdf
+
+pandoc "$1" -t beamer -o "$1"\.pdf
+mupdf "$1"\.pdf
+rm "$1"\.pdf
+
