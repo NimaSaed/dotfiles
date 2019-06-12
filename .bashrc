@@ -1,7 +1,5 @@
-#TERM="screen-256color"
-#export TERM
-TERMINAL="st"
-export TERMINAL
+#export TERM="screen-256color"
+export TERMINAL="st"
 
 #PS1='\e[0;33m(\u) >_ \e[0;33m(\W)\e[0m '
 PS1='\e[0;33m >_ \e[0;33m(\W)\e[0m '
@@ -76,7 +74,7 @@ export LESS_TERMCAP_so=$'\E[01;44;33m' # begin reverse video
 export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
 export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
 export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
-export GROFF_NO_SGR=1                  # for konsole and gnome-terminal
+#export GROFF_NO_SGR=1                  # for konsole and gnome-terminal
 
 if [ -z "$TMUX" ]; then 
     tmux a -t Main || tmux new -s Main
@@ -88,3 +86,10 @@ alias gn="cd $n"
 alias sn="tree $n"
 alias n="~/.scripts/createNote.sh"
 alias t="~/.scripts/todo"
+
+wttr()
+{
+    local request="wttr.in/${1-3.108861, 101.580861}?0"
+    [ "$COLUMNS" -lt 125 ] && request+='?n'
+    curl -H "Accept-Language: ${LANG%_*}" --compressed "$request"
+}
