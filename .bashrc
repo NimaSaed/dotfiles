@@ -89,7 +89,7 @@ alias t="~/.scripts/todo"
 
 wttr()
 {
-    local request="wttr.in/${1-3.108861, 101.580861}?0"
+    local request="wttr.in/${1-}?0"
     [ "$COLUMNS" -lt 125 ] && request+='?n'
     curl -H "Accept-Language: ${LANG%_*}" --compressed "$request"
 }
