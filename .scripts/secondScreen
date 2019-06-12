@@ -1,24 +1,17 @@
 #!/usr/bin/env bash
 
-mainScreen="eDP1"
-SecondScreen=$(xrandr | grep -w connected | grep -v ${mainScreen} | awk {'print $1'})
-extended=$(xrandr | grep "^DP\|^HD" | grep -w connected | awk {'print $14'})
+mainScreen=$(xrandr | grep -w primary | awk '{print $1}')
+SecondScreenIsConnected=$(xrandr | grep -w connected | grep -v primary | awk {'print $1'})
+SecondScreenIsextended=$(xrandr | grep "^DP\|^HD" | grep -w connected | awk {'print $14'})
 
-
-if [ "$SecondScreen" ] && [ "$extended" ] && [ "$1" == "off" ]; then 
-    xrandr --output $SecondScreen --off --output ${mainScreen} --auto
-elif [ "$SecondScreen" ]; then
-
-    if [ "$1" == "m" ]; then 
-        xrandr --output ${mainScreen} --auto --output $SecondScreen --auto --same-as eDP-1
-    elif [ "$1" == "e" ] ; then 
-        xrandr --output $SecondScreen --auto --above ${mainScreen}
-    elif [ "$1" == "s" ] ; then 
-        xrandr --output $SecondScreen --auto --output ${mainScreen} --off
-    fi
-    #xrandr --output $SecondScreen --auto --above ${mainScreen}
-    #feh --bg-fill --no-fehbg ~/.wallpaper
-    #~/.scripts/bing-background
+if [ "$1" == "off" ] && [ "${SecondScreenIsConnected}" ] && [ "$SecondScreenIsextended" ]; then
+    xrandr --output ${SecondScreenIsConnected} --off --output ${mainScreen} --auto
+elif [ "$1" == "m" ] && [ "${SecondScreenIsConnected}" ]; then
+    xrandr --output ${mainScreen} --auto --output ${SecondScreenIsConnected} --auto --same-as ${mainScreen}
+elif [ "$1" == "e" ] && [ "${SecondScreenIsConnected}" ] ; then
+    xrandr --output  ${mainScreen} --auto --output ${SecondScreenIsConnected} --auto --above ${mainScreen}
+elif [ "$1" == "s" ] && [ "${SecondScreenIsConnected}" ] ; then
+    xrandr --output ${mainScreen} --off --output ${SecondScreenIsConnected} --auto
 else 
     echo "No second screen is connected"
 fi
