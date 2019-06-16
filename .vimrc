@@ -12,7 +12,7 @@ Plug 'junegunn/goyo.vim'
 call plug#end()
 """""""""""""""""""""""""""
 
-let mapleader =" "
+let mapleader = " "
 set nocompatible
 filetype plugin on 
 set path=~/**
@@ -21,7 +21,7 @@ set wildmenu
 "set laststatus=2
 set encoding=utf-8
 
-"fine a way to turn spelling on only when the file is not .txt or .md
+"Turn spelling on only when the file is .txt, .md or gitcommit
 augroup markdownSpell
     autocmd!
     autocmd FileType markdown setlocal spell
@@ -31,20 +31,21 @@ augroup markdownSpell
     autocmd FileType gitcommit setlocal spell
 augroup END
 set spelllang=en
+
 " Turn on spelling on/off
 map <leader>s :setlocal spell! spelllang=en_us<CR>
 
 " Toggle paste mode
 set pastetoggle=<F12>
 
-"noremap <Up> <Nop>
-"noremap <Down> <Nop>
-"noremap <Left> <Nop>
-"noremap <Right> <Nop>
-"inoremap <Up> <Nop>
-"inoremap <Down> <Nop>
-"inoremap <Left> <Nop>
-"inoremap <Right> <Nop>
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+inoremap <Up> <Nop>
+inoremap <Down> <Nop>
+inoremap <Left> <Nop>
+inoremap <Right> <Nop>
 
 
 " enable search to jump to word
@@ -52,14 +53,18 @@ set incsearch
 
 " enable syntax highlighting
 syntax enable
+
+" Read more here: https://github.com/w0ng/vim-hybrid
 let g:hybrid_custom_term_colors = 1
-let g:hybrid_reduced_contrast = 0 " Remove this line if using the default palette.
-set background=dark
+let g:hybrid_reduced_contrast = 0
 colorscheme hybrid
-" I dont line the line number color in hybrid
+set background=dark
+
+" I dont like the line number color in hybrid, so I chaged it the way I want them.
 highlight LineNr ctermfg=gray
 highlight CursorLineNr ctermfg=red
 highlight Visual ctermbg=gray
+
 " turn on/off syntax color 
 map <Leader>h :if exists("syntax_on")<BAR>syntax off<BAR>else<BAR>syntax enable <BAR>endif<CR>
 
