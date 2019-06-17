@@ -86,6 +86,8 @@ alias gn="cd $n"
 alias sn="tree $n"
 alias n="~/.scripts/createNote.sh"
 alias t="~/.scripts/todo"
+alias arch="docker run --rm -it archlinux/base"
+alias barch="docker run --rm -it blackarch bash"
 
 wttr()
 {
