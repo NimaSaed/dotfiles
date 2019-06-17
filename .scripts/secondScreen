@@ -2,10 +2,12 @@
 
 mainScreen=$(xrandr | grep -w primary | awk '{print $1}')
 SecondScreenIsConnected=$(xrandr | grep -w connected | grep -v primary | awk {'print $1'})
-SecondScreenIsextended=$(xrandr | grep "^DP\|^HD" | grep -w connected | awk {'print $14'})
+SecondScreenIsextended=$(xrandr | grep -w connected | grep -v primary | awk {'print $14'})
 
-if [ "$1" == "off" ] && [ "${SecondScreenIsConnected}" ] && [ "$SecondScreenIsextended" ]; then
+if [ "$1" == "off" ] && [ "${SecondScreenIsConnected}" ]; then
     xrandr --output ${SecondScreenIsConnected} --off --output ${mainScreen} --auto
+elif [ "$1" == "off" ]; then
+    xrandr --output ${mainScreen} --auto
 elif [ "$1" == "m" ] && [ "${SecondScreenIsConnected}" ]; then
     xrandr --output ${mainScreen} --auto --output ${SecondScreenIsConnected} --auto --same-as ${mainScreen}
 elif [ "$1" == "e" ] && [ "${SecondScreenIsConnected}" ] ; then
