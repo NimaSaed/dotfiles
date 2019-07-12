@@ -13,8 +13,7 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-Font pango:SF Pro Display 8
-# Font pango:hack 9
+Font pango:Liberation\ Mono 7
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -32,7 +31,7 @@ floating_modifier $mod
 
 # start a terminal
 #bindsym $mod+Return exec --no-startup-id i3-sensible-terminal
-bindsym $mod+Return exec --no-startup-id st 
+bindsym $mod+Return exec --no-startup-id st
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -42,7 +41,8 @@ bindsym $mod+Shift+q kill
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
-bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+bindsym $mod+d exec --no-startup-id dmenu_run -sb '$xforeground' -sf '$xbackground' -nb '$xbackground' -nf '$xforeground'
+
 
 # change focus
 bindsym $mod+h focus left
@@ -109,7 +109,7 @@ set $ws10 "10:"
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
-bindsym $mod+2 workspace $ws2 
+bindsym $mod+2 workspace $ws2
 bindsym $mod+3 workspace $ws3
 bindsym $mod+4 workspace $ws4
 bindsym $mod+5 workspace $ws5
@@ -133,12 +133,12 @@ bindsym $mod+Shift+0 move container to workspace $ws10
 
 assign [class="Firefox"] $ws2
 assign [class="Skype"] $ws3
-assign [title="Win10 Quintiq*"] $ws4
 assign [class="VirtualBox Manager"] $ws5
 assign [class="VirtualBox Machine"] $ws5
+assign [title="Win10 Quintiq*"] $ws4
 
-gaps inner 5
-gaps outer 5
+#gaps inner 5
+#gaps outer 5
 
 workspace $ws10 output DP2-2
 #workspace $ws1 gaps inner 5
@@ -179,60 +179,64 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-#################
-# window colors #
-#################
+# Get colors from Xresources
+set_from_resource $xforeground foreground
+set_from_resource $xbackground background
+set_from_resource $xcursor cursorColor
+set_from_resource $xcolor0 color0
+set_from_resource $xcolor8 color8
+set_from_resource $xcolor1 color1
+set_from_resource $xcolor9 color9
+set_from_resource $xcolor2 color2
+set_from_resource $xcolor10 color10
+set_from_resource $xcolor3 color3
+set_from_resource $xcolor11 color11
+set_from_resource $xcolor4 color4
+set_from_resource $xcolor12 color12
+set_from_resource $xcolor5 color5
+set_from_resource $xcolor13 color13
+set_from_resource $xcolor6 color6
+set_from_resource $xcolor14 color14
+set_from_resource $xcolor7 color7
+set_from_resource $xcolor15 color15
 
-
-set $bg-color            #1d1f21
-set $inactive-bg-color   #1d1f21
-set $text-color          #c5c8c6
-set $inactive-text-color #707880
-set $urgent-bg-color     #a54242
-set $indicator-color     #8c9440
-
-#                       border              background         text                 indicator
-client.focused          $bg-color          $bg-color          $text-color          $indicator-color
-client.unfocused        $inactive-bg-color $inactive-bg-color $inactive-text-color $indicator-color
-client.focused_inactive $inactive-bg-color $inactive-bg-color $inactive-text-color $indicator-color
-client.urgent           $urgent-bg-color   $urgent-bg-color   $text-color          $indicator-color
+# Colors
+# Class                 border          backgr      text            indic
+client.focused          $xcolor6       $xbackground     $xbackground   $xcolor15
+client.focused_inactive $xcolor6       $xcolor15     $xcolor14
+client.unfocused        $xcolor6       $xcolor15     $xcolor14
+client.urgent           $xbackground   $xcolor9     $xbackground
+client.placeholder      $xcolor7       $xcolor7     $xcolor14
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 
 bar {
     strip_workspace_numbers yes
-    tray_output none
-    output DP2-2
-    position top 
-    colors {
-        background $bG-COLOR
-        separator #757575
-        #                  border             background         text
-        focused_workspace  $bg-color          $bg-color          $text-color
-        inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
-        urgent_workspace   $urgent-bg-color   $urgent-bg-color   $text-color
-    }
-}
-bar {
-    strip_workspace_numbers yes
     #strip_workspace_name yes
     tray_output none
-    output eDP1
-    STATUS_COMMAND i3blocks -c ~/.config/i3/i3blocks.conf 
-    position top 
+    #output eDP1
+    STATUS_COMMAND i3blocks -c ~/.config/i3/i3blocks.conf
+    position top
     colors {
-        background $bG-COLOR
-        separator #757575
-        #                  border             background         text
-        focused_workspace  $bg-color          $bg-color          $text-color
-        inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
-        urgent_workspace   $urgent-bg-color   $urgent-bg-color   $text-color
+        #Where      #Color
+        background  $xbackground
+        statusline  $xforeground
+        separator   $xforeground
+
+        #Where              #Border         #Background     #Text
+        focused_workspace   $xbackground    $xbackground    $xcolor15
+        active_workspace    $xbackground    $xbackground    $xcolor15
+        inactive_workspace  $xbackground    $xbackground    $xcolor11
+        urgent_workspace    $xbackground    $xbackground    $xcolor1
+        binding_mode        $xbackground    $xbackground    $xcolor15
     }
 }
 
+# Change dark/light theme
+bindsym $mod+t exec --no-startup-id "~/.scripts/theme; st"
 #######################
-# Program and Setting # 
+# Program and Setting #
 #######################
 
 # Lockscreen
@@ -241,18 +245,16 @@ bindsym $mod+Shift+x exec --no-startup-id bash ~/.config/i3/lock.sh
 # Rofi
 #bindsym $mod+d exec --no-startup-id rofi -show run
 
-# Qutebrowser 
+# Qutebrowser
 #bindsym $mod+q exec --no-startup-id qutebrowser
 
-# Background 
+# Background
 #exec_always --no-startup-id ~/.scripts/bing-background
-exec_always --no-startup-id feh --bg-fill --no-fehbg ~/.wallpaper
+#exec_always --no-startup-id feh --bg-fill --no-fehbg ~/.wallpaper
+exec_always --no-startup-id hsetroot -solid "$xcolor0"
 
 # Compton
-exec_always --no-startup-id compton
-
-# Xcompmgr
-#exec_always --no-startup-id xcompmgr -c -C -t-5 -l-5 -r4.2 -o.55
+#exec_always --no-startup-id compton --config /home/nima/.config/compton/compton.conf
 
 ## Disable DPMS turning off the screen
 #exec --no-startup-id xset -dpms
@@ -262,17 +264,18 @@ exec_always --no-startup-id compton
 #exec --no-startup-id xset -b
 
 # unclutter, to hide mouse pointer wheneven is not needed
-exec --no-startup-id unclutter -idle 1.5 
+exec --no-startup-id unclutter -idle 1.5
 
 # Window setting
-for_window [class="^.*"] border pixel 1 
+for_window [class="^.*"] border pixel 0
 new_window 1pixel
 
 
 # floating windows
 for_window [title="About Mozilla Firefox"] floating enable
+for_window [title="^.*\.md.*"] move to workspace $ws1
 for_window [title="Quintiq Thin Client"] floating enable
-for_window [class="Nautilus"] floating enable 
+for_window [class="Nautilus"] floating enable
 for_window [class="ffplay"] floating enable move right 750px,move down 380px sticky enable
 
 # volume control
@@ -311,7 +314,7 @@ bindsym mod1+XF86Favorites exec --no-startup-id "~/.scripts/screen_capture -q"
 #exec_always --no-startup-id echo 120 | sudo tee /sys/devices/platform/i8042/serio1/serio2/speed
 
 # Screenshot
-bindsym --release Print exec --no-startup-id scrot -s ~/Dropbox/screenshots/%Y-%m-%d-%H-%M-%S.png 
+bindsym --release Print exec --no-startup-id scrot -s ~/Dropbox/screenshots/%Y-%m-%d-%H-%M-%S.png
 
 # Dropbox
 exec --no-startup-id dropbox-cli start
@@ -322,21 +325,21 @@ exec --no-startup-id dropbox-cli start
 exec_always --no-startup-id echo 1500 | sudo tee /proc/sys/vm/dirty_writeback_centisecs
 
 #shortcut for disable/enable the gap
-bindsym $mod+o exec --no-startup-id "if [ `i3-msg -t get_tree | grep -Po \
-    '.*\\"gaps\\":{\\"inner\\":\K(-|)[0-9]+(?=.*\\"focused\\":true)'` -eq 0 ]; then \
-        i3-msg gaps inner current set 0; \
-        i3-msg gaps outer current set 0; \
-else \
-        i3-msg gaps inner current set 5; \
-        i3-msg gaps outer current set 5; \
-fi"
+#bindsym $mod+o exec --no-startup-id "if [ `i3-msg -t get_tree | grep -Po \
+#    '.*\\"gaps\\":{\\"inner\\":\K(-|)[0-9]+(?=.*\\"focused\\":true)'` -eq 0 ]; then \
+#        i3-msg gaps inner current set 0; \
+#        i3-msg gaps outer current set 0; \
+#else \
+#        i3-msg gaps inner current set 5; \
+#        i3-msg gaps outer current set 5; \
+#fi"
 
 ## scratchpad for terminal
 #for_window [instance="dropdown"] floating enable
 #for_window [instance="dropdown"] resize set 1200 600
 #for_window [instance="dropdown"] move scratchpad
 #for_window [instance="dropdown"] border pixel 3
-#exec --no-startup-id urxvtc -name dropdown 
+#exec --no-startup-id urxvtc -name dropdown
 #bindsym $mod+t [instance="dropdown"] scratchpad show; [instance="dropdown"] move position center
 #
 ## scratchpad for python
@@ -352,7 +355,7 @@ fi"
 #for_window [instance="notedrop"] resize set 1200 600
 #for_window [instance="notedrop"] move scratchpad
 #for_window [instance="notedrop"] border pixel 3
-#exec --no-startup-id urxvtc -name notedrop -e vim ~/Dropbox/Notes/inbox.md 
+#exec --no-startup-id urxvtc -name notedrop -e vim ~/Dropbox/Notes/inbox.md
 #bindsym $mod+n [instance="notedrop"] scratchpad show; [instance="notedrop"] move position center
 
 bindsym $mod+Shift+u move workspace to output up
