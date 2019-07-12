@@ -8,6 +8,7 @@ if [ "$1" == "off" ] && [ "${SecondScreenIsConnected}" ]; then
     xrandr --output ${SecondScreenIsConnected} --off --output ${mainScreen} --auto
 elif [ "$1" == "off" ]; then
     xrandr --output ${mainScreen} --auto
+    xrandr -o 0
 elif [ "$1" == "m" ] && [ "${SecondScreenIsConnected}" ]; then
     xrandr --output ${mainScreen} --auto --output ${SecondScreenIsConnected} --auto --same-as ${mainScreen}
 elif [ "$1" == "e" ] && [ "${SecondScreenIsConnected}" ] ; then
