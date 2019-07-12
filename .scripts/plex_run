@@ -1,24 +1,28 @@
 #!/usr/bin/env bash
-
-docker pull plexinc/pms-docker
-docker run \
---rm \
--d \
---name plex \
--p 32400:32400/tcp \
--p 33400:33400/tcp `# Added for Webtool Plugin` \
--p 3005:3005/tcp \
--p 8324:8324/tcp \
--p 32469:32469/tcp \
--p 1900:1900/udp \
--p 32410:32410/udp \
--p 32412:32412/udp \
--p 32413:32413/udp \
--p 32414:32414/udp \
--e TZ="Malaysia" \
--e ADVERTISE_IP="http://$(ip -f inet -o addr | grep -m 1 -v " lo\|docker\|vbox" | awk {'print $4'} | cut -d '/' -f 1):32400/" \
--h $(ip -f inet -o addr | grep -m 1 -v " lo\|docker\|vbox" | awk {'print $4'} | cut -d '/' -f 1) \
--v ~/Videos/.plex/config:/config \
--v ~/Videos/.plex/transcode:/transcode \
--v ~/Videos/:/data \
-plexinc/pms-docker
+if [ -z "$(docker stop plex 2> /dev/null)" ];
+then
+    docker pull plexinc/pms-docker
+    docker run \
+    --rm \
+    -d \
+    --name plex \
+    -p 32400:32400/tcp \
+    -p 33400:33400/tcp `# Added for Webtool Plugin` \
+    -p 3005:3005/tcp \
+    -p 8324:8324/tcp \
+    -p 32469:32469/tcp \
+    -p 1900:1900/udp \
+    -p 32410:32410/udp \
+    -p 32412:32412/udp \
+    -p 32413:32413/udp \
+    -p 32414:32414/udp \
+    -e TZ="Malaysia" \
+    -e ADVERTISE_IP="http://$(ip -f inet -o addr | grep -m 1 -v " lo\|docker\|vbox" | awk {'print $4'} | cut -d '/' -f 1):32400/" \
+    -h $(ip -f inet -o addr | grep -m 1 -v " lo\|docker\|vbox" | awk {'print $4'} | cut -d '/' -f 1) \
+    -v ~/Videos/.plex/config:/config \
+    -v ~/Videos/.plex/transcode:/transcode \
+    -v ~/Videos/:/data \
+    plexinc/pms-docker
+else
+    echo "plex stopped"
+fi
