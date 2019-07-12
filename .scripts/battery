@@ -12,25 +12,25 @@ if [ "$ac" = "0" ]; then
         time_int=$(echo "$total_energy / $power_now0" | bc -l)
     elif [ "$power_now0" = "0" ] && [ "$power_now1" -ne "0" ]; then
         time_int=$(bc -l <<< $total_energy/$power_now1)
-    else 
+    else
         time_int=0
     fi
     lessThanHour=$(echo $time_int'<'1 | bc -l)
-    if [ "$lessThanHour" == "1" ]; then 
+    if [ "$lessThanHour" == "1" ]; then
         hour=0
-    else 
+    else
         hour=$(echo $time_int | cut -f1 -d".")
     fi
     min_int=$(bc -l <<< $time_int-$hour)
     min=$(echo "scale=2; $min_int*60/100" | bc -l)
     min=$(echo $min | sed 's/\.//')
-else 
+else
     hour=0;
     min=0;
 fi
 #echo $hour:$min
 
-Cap0=`cat /sys/class/power_supply/BAT0/capacity` 
+Cap0=`cat /sys/class/power_supply/BAT0/capacity`
 Cap1=`cat /sys/class/power_supply/BAT1/capacity`
 NUM=$(expr $Cap0 + $Cap1)
 NUM=$(echo $NUM/2 | bc)
@@ -38,13 +38,13 @@ STATUS0=`cat /sys/class/power_supply/BAT0/status`
 STATUS1=`cat /sys/class/power_supply/BAT1/status`
 
 if [ "$NUM" -ge 70 ]; then
-	color="#8c9440"
+    color="$(xrdb -query | grep -w color2 | cut -f2)"
 elif [ "$NUM" -ge 40 ]; then
-	color="#c5c8c6"
+    color="$(xrdb -query | grep -w color15 | cut -f2)"
 elif [ "$NUM" -ge 10 ]; then
-	color="#de935f"
+    color="$(xrdb -query | grep -w color3 | cut -f2)"
 else
-	color="#a54242"
+    color="$(xrdb -query | grep -w color1 | cut -f2)"
 fi
 
 IND=""
@@ -52,11 +52,11 @@ if [ "$STATUS0" = "Discharging" ] || [ "$STATUS1" = "Discharging" ]; then
     IND=''
 elif [ "$STATUS0" = "Full" ] && [ "$STATUS1" = "Full" ]; then
     IND=''
-else 
+else
     IND=''
 fi
 
-echo -n "<span color='$color'> $NUM% $IND $hour:$min </span>"
+echo -n "<span color='$color'> $NUM% $IND $hour:$min </span>"
 
 
 

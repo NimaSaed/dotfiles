@@ -34,13 +34,13 @@ QUALITY=$(grep $INTERFACE /proc/net/wireless | awk '{ print int($3 * 100 / 70) }
 
 color=""
 if [[ $QUALITY -ge 80 ]]; then
-    color="#8c9440"
+    color="$(xrdb -query | grep -w color2 | cut -f2)"
 elif [[ $QUALITY -lt 80 ]]; then
-    color="#f0c674"
+    color="$(xrdb -query | grep -w color4 | cut -f2)"
 elif [[ $QUALITY -lt 60 ]]; then
-    color="#de935f"
+    color="$(xrdb -query | grep -w color3 | cut -f2)"
 elif [[ $QUALITY -lt 40 ]]; then
-    color="#a54242"
+    color="$(xrdb -query | grep -w color1 | cut -f2)"
 fi
 
 echo -n "<span color='$color'>  $QUALITY% </span>"

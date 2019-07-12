@@ -5,14 +5,14 @@
 #
 #         USAGE: ./install.sh
 #
-#   DESCRIPTION: 
+#   DESCRIPTION:
 #
 #       OPTIONS: ---
 #  REQUIREMENTS: ---
 #          BUGS: ---
 #         NOTES: ---
 #        AUTHOR: Nima Saed (), nima.saed@me.com
-#  ORGANIZATION: 
+#  ORGANIZATION:
 #       CREATED: 06/10/2019 09:34:22 AM
 #      REVISION:  ---
 #===============================================================================
@@ -28,4 +28,4 @@ ln -sfn ${PWD}/.tmux.conf  ${HOME}
 ln -sfn ${PWD}/.vimrc ${HOME}
 ln -sfn ${PWD}/.xinitrc ${HOME}
 ln -sfn ${PWD}/i3/ ${HOME}/.config/
-
+ln -sfn ${PWD}/.colors/ ${HOME}
