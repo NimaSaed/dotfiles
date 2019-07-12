@@ -1,10 +1,9 @@
 #export TERM="screen-256color"
 export TERMINAL="st"
+export TERMCMD="st"
 
-#PS1='\e[0;33m(\u) >_ \e[0;33m(\W)\e[0m '
-PS1='\e[0;33m >_ \e[0;33m(\W)\e[0m '
+PS1='\e[0;49;97m >_ \e[0;49;97m(\W)\e[0;49;97m '
 eval $(dircolors ~/.dircolors/dircolors)
-
 # History Setting
 HISTSIZE=10000000
 HISTCONTROL=ignoreboth
@@ -76,13 +75,13 @@ export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
 export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 #export GROFF_NO_SGR=1                  # for konsole and gnome-terminal
 
-if [ -z "$TMUX" ]; then 
+if [ -z "$TMUX" ]; then
     tmux a -t Main || tmux new -s Main
 fi
 
 export n=~/Dropbox/Notes/
 alias en="cd $n && vim note_index.md && cd"
-alias gn="cd $n"
+alias gn="ranger ~/Dropbox/Notes"
 alias sn="tree $n"
 alias n="~/.scripts/createNote.sh"
 alias t="~/.scripts/todo"
