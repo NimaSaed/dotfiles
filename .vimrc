@@ -1,22 +1,23 @@
 """""""""""""""""""""""""""
-" Plugins 
+" Plugins
 """""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 
 Plug 'wellle/targets.vim'
 Plug 'davidhalter/jedi-vim'
-Plug 'w0ng/vim-hybrid'
+Plug 'chriskempson/base16-vim'
 Plug 'iamcco/markdown-preview.vim'
 Plug 'junegunn/goyo.vim'
 
 call plug#end()
 """""""""""""""""""""""""""
-
 let mapleader = " "
-set nocompatible
-filetype plugin on 
-set path=~/**
+filetype plugin on
+set path=/home/nima/**
 set wildmenu
+
+"Set clipboard to be shared with middle click
+set clipboard=unnamed
 
 "set laststatus=2
 set encoding=utf-8
@@ -35,6 +36,9 @@ set spelllang=en
 " Turn on spelling on/off
 map <leader>s :setlocal spell! spelllang=en_us<CR>
 
+" Do not check url spelling (thanks to http://www.panozzaj.com/blog/2016/03/21/ignore-urls-and-acroynms-while-spell-checking-vim/)
+autocmd BufRead * syn match UrlNoSpell '\w\+:\/\/[^[:space:]]\+' contains=@NoSpell
+
 " Toggle paste mode
 set pastetoggle=<F12>
 
@@ -47,26 +51,33 @@ inoremap <Down> <Nop>
 inoremap <Left> <Nop>
 inoremap <Right> <Nop>
 
+" remove all white spaces at the end of lines when I save the file
+autocmd BufWritePre * %s/\s\+$//e
 
 " enable search to jump to word
 set incsearch
 
+" enable search highlight
+set hlsearch
+
 " enable syntax highlighting
 syntax enable
+colorscheme base16-solarized-light
+highlight LineNr ctermfg=none ctermbg=none
+highlight CursorLineNr ctermbg=none ctermfg=red
 
-" Read more here: https://github.com/w0ng/vim-hybrid
-let g:hybrid_custom_term_colors = 1
-let g:hybrid_reduced_contrast = 0
-colorscheme hybrid
-set background=dark
+" turn on/off syntax color
+function! HighlighColor()
+    if exists("g:syntax_on")
+        syntax off
+    else
+        syntax enable
+        highlight LineNr ctermfg=none ctermbg=none
+        highlight CursorLineNr ctermbg=none ctermfg=red
+    endif
+endfunction
 
-" I dont like the line number color in hybrid, so I chaged it the way I want them.
-highlight LineNr ctermfg=gray
-highlight CursorLineNr ctermfg=red
-highlight Visual ctermbg=gray
-
-" turn on/off syntax color 
-map <Leader>h :if exists("syntax_on")<BAR>syntax off<BAR>else<BAR>syntax enable <BAR>endif<CR>
+map <Leader>h :call HighlighColor()<CR>
 
 " show line numbers
 set number relativenumber
@@ -106,7 +117,7 @@ let python_highlight_all = 1
 set visualbell
 
 " Using mouse for Vim
-" To Disable mouse hold down shift key  
+" To Disable mouse hold down shift key
 " set mouse=a
 
 " Splits open at the bottom and right, which is non-retarded, unlike vim defaults.
@@ -120,7 +131,7 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 """"""""""""""""""""""""""""""""""""""
 """"""""""""""""""""" Markdown preview
 """"""""""""""""""""""""""""""""""""""
-let g:mkdp_path_to_chrome = 'firefox'
+let g:mkdp_path_to_chrome = 'firefox --profile ~/.mozilla/firefox/5d4xorxm.frameless/'
 map <leader>v :MarkdownPreview<CR>
 map <leader>b :MarkdownPreviewStop<CR>
 
@@ -129,7 +140,7 @@ map <leader>b :MarkdownPreviewStop<CR>
 """"""""""""""""""""""""""""""""""""""
 augroup saveFolding
     autocmd!
-    autocmd BufWinLeave note_index.md mkview 
+    autocmd BufWinLeave note_index.md mkview
     autocmd BufWinEnter note_index.md silent loadview
 augroup END
 
@@ -161,9 +172,8 @@ function! s:goyo_leave()
       autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
       autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
     augroup END
-    highlight LineNr ctermfg=gray
-    highlight CursorLineNr ctermfg=red
-    highlight Visual ctermbg=gray
+        highlight LineNr ctermfg=none ctermbg=none
+        highlight CursorLineNr ctermbg=none ctermfg=red
 endfunction
 
 autocmd! User GoyoEnter nested call <SID>goyo_enter()
@@ -206,6 +216,6 @@ map <leader>o ci[o<Esc>0
 map <leader>m 0f[dwdwi> <Esc>0
 
 "================================================================================
-" To add banner list this  
+" To add banner list this
 "================================================================================
 autocmd Filetype * inoremap \ban <Esc>80i=<Esc>A<Enter><Enter><Esc>80i=<Esc>k^i<space>
