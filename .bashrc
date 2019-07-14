@@ -2,7 +2,7 @@
 export TERMINAL="st"
 export TERMCMD="st"
 
-PS1='\e[0;49;97m >_ \e[0;49;97m(\W)\e[0;49;97m '
+PS1='\e[0;40;34m >_ \e[0;40;34m(\e[1;49;96m\W\e[0;40;34m)\e[0;49;95m '
 eval $(dircolors ~/.dircolors/dircolors)
 # History Setting
 HISTSIZE=10000000
@@ -65,15 +65,14 @@ alias pacman="sudo pacman"
 export EDITOR='vim'
 export LC_ALL='en_US.UTF-8'
 
-#Man page color
-export LESS_TERMCAP_mb=$'\E[1;31m'     # begin bold
-export LESS_TERMCAP_md=$'\E[1;36m'     # begin blink
+export LESS=-R
+export LESS_TERMCAP_mb=$'\E[4;49;31m'     # begin blink
+export LESS_TERMCAP_md=$'\E[1;49;36m'     # begin bold
 export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
-export LESS_TERMCAP_so=$'\E[01;44;33m' # begin reverse video
+export LESS_TERMCAP_so=$'\E[7;49;35m' # begin reverse video
 export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
-export LESS_TERMCAP_us=$'\E[1;32m'     # begin underline
+export LESS_TERMCAP_us=$'\E[4;49;34m'     # begin underline
 export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
-#export GROFF_NO_SGR=1                  # for konsole and gnome-terminal
 
 if [ -z "$TMUX" ]; then
     tmux a -t Main || tmux new -s Main
