@@ -29,3 +29,4 @@ ln -sfn ${PWD}/.vimrc ${HOME}
 ln -sfn ${PWD}/.xinitrc ${HOME}
 ln -sfn ${PWD}/i3/ ${HOME}/.config/
 ln -sfn ${PWD}/.colors/ ${HOME}
+ln -sfn ${PWD}/.dircolors/ ${HOME}
