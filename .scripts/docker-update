@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 
-docker images | grep -v REPO | awk '{print $1}' | xargs -L1 docker pull 
+echo "Updating all dockers images"
+echo
+docker images --digests | grep -v \<none\> | grep -v REPO | awk '{print $1":"$2}' | xargs -L1 docker pull
+echo
 
 # Remove images with none tag
 imagesToRemove=$(docker images | grep \<none\> | awk '{print $3}')
-echo $imagesToRemove 
 if [ ! -z "$imagesToRemove" ];
 then
+    echo "removing below images"
+    echo $imagesToRemove
     docker images | grep \<none\> | awk '{print $3}' | xargs -L1 docker rmi
 fi
