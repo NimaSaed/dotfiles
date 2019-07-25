@@ -13,7 +13,7 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-Font pango:Liberation\ Mono 7
+Font pango:Hack 8
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -41,7 +41,7 @@ bindsym $mod+Shift+q kill
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
-bindsym $mod+d exec --no-startup-id dmenu_run -sb '$xforeground' -sf '$xbackground' -nb '$xbackground' -nf '$xforeground'
+bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -i -sb '$xforeground' -sf '$xbackground' -nb '$xbackground' -nf '$xforeground'"
 
 
 # change focus
@@ -131,7 +131,7 @@ bindsym $mod+Shift+8 move container to workspace $ws8
 bindsym $mod+Shift+9 move container to workspace $ws9
 bindsym $mod+Shift+0 move container to workspace $ws10
 
-assign [class="Firefox"] $ws2
+assign [class="firefox"] $ws2
 assign [class="Skype"] $ws3
 assign [class="VirtualBox Manager"] $ws5
 assign [class="VirtualBox Machine"] $ws5
@@ -180,33 +180,33 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # Get colors from Xresources
-set_from_resource $xforeground foreground
-set_from_resource $xbackground background
-set_from_resource $xcursor cursorColor
-set_from_resource $xcolor0 color0
-set_from_resource $xcolor8 color8
-set_from_resource $xcolor1 color1
-set_from_resource $xcolor9 color9
-set_from_resource $xcolor2 color2
-set_from_resource $xcolor10 color10
-set_from_resource $xcolor3 color3
-set_from_resource $xcolor11 color11
-set_from_resource $xcolor4 color4
-set_from_resource $xcolor12 color12
-set_from_resource $xcolor5 color5
-set_from_resource $xcolor13 color13
-set_from_resource $xcolor6 color6
-set_from_resource $xcolor14 color14
-set_from_resource $xcolor7 color7
-set_from_resource $xcolor15 color15
+set_from_resource $xforeground  foreground
+set_from_resource $xbackground  background
+set_from_resource $xcursor      cursorColor
+set_from_resource $xcolor0      color0
+set_from_resource $xcolor8      color8
+set_from_resource $xcolor1      color1
+set_from_resource $xcolor9      color9
+set_from_resource $xcolor2      color2
+set_from_resource $xcolor10     color10
+set_from_resource $xcolor3      color3
+set_from_resource $xcolor11     color11
+set_from_resource $xcolor4      color4
+set_from_resource $xcolor12     color12
+set_from_resource $xcolor5      color5
+set_from_resource $xcolor13     color13
+set_from_resource $xcolor6      color6
+set_from_resource $xcolor14     color14
+set_from_resource $xcolor7      color7
+set_from_resource $xcolor15     color15
 
 # Colors
-# Class                 border          backgr      text            indic
-client.focused          $xcolor6       $xbackground     $xbackground   $xcolor15
-client.focused_inactive $xcolor6       $xcolor15     $xcolor14
-client.unfocused        $xcolor6       $xcolor15     $xcolor14
-client.urgent           $xbackground   $xcolor9     $xbackground
-client.placeholder      $xcolor7       $xcolor7     $xcolor14
+# Class                 border          backgr          text            indic
+client.focused          $xcolor6        $xbackground    $xbackground    $xcolor15
+client.focused_inactive $xcolor6        $xcolor15       $xcolor14
+client.unfocused        $xcolor6        $xcolor15       $xcolor14
+client.urgent           $xbackground    $xcolor9        $xbackground
+client.placeholder      $xcolor7        $xcolor7        $xcolor14
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -229,12 +229,12 @@ bar {
         active_workspace    $xbackground    $xbackground    $xcolor15
         inactive_workspace  $xbackground    $xbackground    $xcolor11
         urgent_workspace    $xbackground    $xbackground    $xcolor1
-        binding_mode        $xbackground    $xbackground    $xcolor15
+        binding_mode        $xcolor1        $xcolor9        $xcolor15
     }
 }
 
 # Change dark/light theme
-bindsym $mod+t exec --no-startup-id "~/.scripts/theme; st"
+bindsym $mod+t exec --no-startup-id "~/.scripts/theme"
 #######################
 # Program and Setting #
 #######################
@@ -251,7 +251,7 @@ bindsym $mod+Shift+x exec --no-startup-id bash ~/.config/i3/lock.sh
 # Background
 #exec_always --no-startup-id ~/.scripts/bing-background
 #exec_always --no-startup-id feh --bg-fill --no-fehbg ~/.wallpaper
-exec_always --no-startup-id hsetroot -solid "$xcolor0"
+exec_always --no-startup-id hsetroot -solid "$xcolor10"
 
 # Compton
 #exec_always --no-startup-id compton --config /home/nima/.config/compton/compton.conf
@@ -290,17 +290,17 @@ bindsym XF86AudioMute exec --no-startup-id amixer set Master toggle; exec --no-s
 bindsym XF86AudioMicMute exec --no-startup-id amixer set Capture toggle
 
 # Brightness
-exec --no-startup-id "sudo ~/.scripts/brightness.py -p 20"
-bindsym XF86MonBrightnessDown exec --no-startup-id "sudo ~/.scripts/brightness.py -d"
-bindsym XF86MonBrightnessUp exec --no-startup-id "sudo ~/.scripts/brightness.py -u"
-bindsym $mod+b exec --no-startup-id "sudo ~/.scripts/brightness.py -p 0"
+exec --no-startup-id "sudo ~/.scripts/brightness d"
+bindsym XF86MonBrightnessDown exec --no-startup-id "sudo ~/.scripts/brightness l"
+bindsym XF86MonBrightnessUp exec --no-startup-id "sudo ~/.scripts/brightness h"
+bindsym $mod+b exec --no-startup-id "sudo ~/.scripts/brightness b"
 
 # Display
 exec_always --no-startup-id xrandr --output eDP-1 --mode 1920x1080
 bindsym XF86Display exec --no-startup-id "~/.scripts/secondScreen e"
 bindsym shift+XF86Display exec --no-startup-id "~/.scripts/secondScreen m"
-bindsym ctrl+XF86Display exec --no-startup-id "~/.scripts/secondScreen off"
-bindsym mod1+XF86Display exec --no-startup-id "~/.scripts/secondScreen s"
+bindsym ctrl+XF86Display exec --no-startup-id "~/.scripts/secondScreen s"
+bindsym mod1+XF86Display exec --no-startup-id "~/.scripts/secondScreen off"
 
 # Screen Capture
 bindsym XF86Favorites exec --no-startup-id "~/.scripts/screen_capture -w"
@@ -314,7 +314,8 @@ bindsym mod1+XF86Favorites exec --no-startup-id "~/.scripts/screen_capture -q"
 #exec_always --no-startup-id echo 120 | sudo tee /sys/devices/platform/i8042/serio1/serio2/speed
 
 # Screenshot
-bindsym --release Print exec --no-startup-id scrot -s ~/Dropbox/screenshots/%Y-%m-%d-%H-%M-%S.png
+bindsym --release Print exec --no-startup-id "~/.scripts/screenshots"
+bindsym --release shift+Print exec --no-startup-id "~/.scripts/screenshots note"
 
 # Dropbox
 exec --no-startup-id dropbox-cli start
@@ -334,22 +335,22 @@ exec_always --no-startup-id echo 1500 | sudo tee /proc/sys/vm/dirty_writeback_ce
 #        i3-msg gaps outer current set 5; \
 #fi"
 
-## scratchpad for terminal
+### scratchpad for terminal
 #for_window [instance="dropdown"] floating enable
 #for_window [instance="dropdown"] resize set 1200 600
 #for_window [instance="dropdown"] move scratchpad
 #for_window [instance="dropdown"] border pixel 3
-#exec --no-startup-id urxvtc -name dropdown
-#bindsym $mod+t [instance="dropdown"] scratchpad show; [instance="dropdown"] move position center
-#
-## scratchpad for python
+#exec --no-startup-id st -n dropdown -e bash --noprofile
+#bindsym $mod+n [instance="dropdown"] scratchpad show; [instance="dropdown"] move position center
+
+### scratchpad for python
 #for_window [instance="pydrop"] floating enable
 #for_window [instance="pydrop"] resize set 1200 600
 #for_window [instance="pydrop"] move scratchpad
 #for_window [instance="pydrop"] border pixel 3
-#exec --no-startup-id urxvtc -name pydrop -e python -q
+#exec --no-startup-id st -n pydrop -e python -q
 #bindsym $mod+p [instance="pydrop"] scratchpad show; [instance="pydrop"] move position center
-#
+
 ## scratchpad for notes
 #for_window [instance="notedrop"] floating enable
 #for_window [instance="notedrop"] resize set 1200 600
