@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+terminal=st
+browser=firefox
+
+currentTheme=$(cat ~/.Xresources | grep theme | cut -d' ' -f3)
+theme=""
+
+case $currentTheme in
+
+    light)
+        theme=dark
+        ;;
+    dark)
+        theme=light
+        ;;
+esac
+
+newcolor=""
+oldcolor=""
+for i in {0..9} {A..F}; do
+    newcolor="${newcolor}\n$(cat ~/.colors/base16-solarized-${theme} | grep -w "#define base0${i}")"
+    oldcolor="${oldcolor}\n$(cat ~/.Xresources | grep -w "#define base0${i}")"
+done
+
+sed "s/${currentTheme}/${theme}/" <~/.Xresources >~/.Xresources.tmp
+sed ':a;N;$!ba;s/'"${oldcolor}"'/'"${newcolor}"'/' <~/.Xresources.tmp >~/.Xresources
+rm .Xresources.tmp
+xrdb -merge ~/.Xresources
+i3-msg reload > /dev/null
+hsetroot -solid "$(xrdb -query | grep -w color10 | cut -f2)"
+
+# If there is a terminal open
+terminal_psid=$(ps -e | grep -w ${terminal} | grep -oP '[\d]{3,}')
+if [ ! -z ${terminal_psid} ]; then
+    killall ${terminal}
+    export TMUX=""
+    ${terminal} -e bash --rcfile ~/.bash_profile &
+fi
+
+exit 0

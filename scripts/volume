@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+Mute=$(amixer get Master | grep off)
+if [ "$?" == "1" ]; then
+    icon="";
+    vol=$(amixer get Master | grep Mono: | awk {'print $4'} | sed 's/\]//' | sed 's/\[//');
+else
+    vol=$(amixer get Master | grep Mono: | awk {'print $4'} | sed 's/\]//' | sed 's/\[//');
+    icon="";
+fi
+echo -n "$vol $icon";

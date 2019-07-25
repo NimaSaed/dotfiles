@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+dropbox_icon="";
+
+status=$(dropbox-cli status);
+
+if [ "$status" == "Dropbox isn't running!" ]; then
+    result="";
+    color="$(xrdb -query | grep -w color1 | cut -f2)"
+else
+    result=$dropbox_icon;
+    color="$(xrdb -query | grep -w color4 | cut -f2)"
+fi
+echo -n "<span color='$color'> $result </span>"
