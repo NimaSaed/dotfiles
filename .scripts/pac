@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-curl -s "https://www.archlinux.org/mirrorlist/?country=JP&protocol=https&ip_version=4" | cut -c2- > mirrors
-rankmirrors -n 1 -v mirrors | tee  mirrorlist
-rm mirrors
-sudo mv mirrorlist /etc/pacman.d/mirrorlist
-yay -Syyu
-

@@ -1,3 +1,0 @@
-#! /usr/bin/env bash
-
-VBoxManage startvm Win10\ Quintiq 2>&1 > /dev/null &
