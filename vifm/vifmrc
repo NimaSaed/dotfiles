@@ -1,0 +1,4 @@
+filetype *.jpg,*.jpeg,*.png,*.gif feh %f 2>/dev/null &
+
+filetype *.pdf mupdf %f
+

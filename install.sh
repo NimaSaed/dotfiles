@@ -36,9 +36,18 @@ ln -sfn ${PWD}/vim/.vimrc ${HOME}
 ln -sfn ${PWD}/x11/.Xresources ${HOME}
 ln -sfn ${PWD}/x11/.xinitrc ${HOME}
 
+# i3-wm
 ln -sfn ${PWD}/i3/ ${HOME}/.config/
+
+# MPV media player
 ln -sfn ${PWD}/mpv/ ${HOME}/.config/
 
 # Colors
 ln -sfn ${PWD}/colors/ ${HOME}/.colors
 ln -sfn ${PWD}/dircolors/ ${HOME}/.dircolors
+
+# vifm (vi file manager)
+ln -sfn ${PWD}/vifm/ ${HOME}/.vifm
+
+# git config
+ln -sfn ${PWD}/git/.gitconfig ${HOME}
