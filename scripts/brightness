@@ -12,25 +12,25 @@ case ${1} in
     h)
         newBrightnessValue=$(( ${currentBrightnessValue} + ${stepValue} ))
         if [ ${newBrightnessValue} -le ${maximumBrightnessValue} ]; then
-            echo -n ${newBrightnessValue} > ${brightnessFile}
+            echo -n ${newBrightnessValue} | sudo tee ${brightnessFile}
         fi
         ;;
 
     l)
         newBrightnessValue=$(( ${currentBrightnessValue} - ${stepValue} ))
         if [ ${newBrightnessValue} -le 0 ]; then
-            echo -n 0 > ${brightnessFile}
+            echo -n 0 | sudo tee ${brightnessFile}
         else
-            echo -n ${newBrightnessValue} > ${brightnessFile}
+            echo -n ${newBrightnessValue} | sudo tee ${brightnessFile}
         fi
         ;;
 
     d) # default state
-        echo -n ${stepValue} > ${brightnessFile}
+        echo -n ${stepValue} | sudo tee ${brightnessFile}
         ;;
 
     b) # blank
-        echo -n 0 > ${brightnessFile}
+        echo -n 0 | sudo tee ${brightnessFile}
         ;;
 
     *)

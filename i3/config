@@ -41,7 +41,7 @@ bindsym $mod+Shift+q kill
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
-bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -i -sb '$xforeground' -sf '$xbackground' -nb '$xbackground' -nf '$xforeground'"
+bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -i -fn Hack -sb '$xforeground' -sf '$xbackground' -nb '$xbackground' -nf '$xforeground'"
 
 
 # change focus
@@ -290,10 +290,10 @@ bindsym XF86AudioMute exec --no-startup-id amixer set Master toggle; exec --no-s
 bindsym XF86AudioMicMute exec --no-startup-id amixer set Capture toggle
 
 # Brightness
-exec --no-startup-id "sudo ~/.scripts/brightness d"
-bindsym XF86MonBrightnessDown exec --no-startup-id "sudo ~/.scripts/brightness l"
-bindsym XF86MonBrightnessUp exec --no-startup-id "sudo ~/.scripts/brightness h"
-bindsym $mod+b exec --no-startup-id "sudo ~/.scripts/brightness b"
+exec --no-startup-id "xbacklight -set 20"
+bindsym XF86MonBrightnessDown exec --no-startup-id "xbacklight - 10"
+bindsym XF86MonBrightnessUp exec --no-startup-id "xbacklight + 10"
+bindsym $mod+b exec --no-startup-id "xbacklight -set 0"
 
 # Display
 exec_always --no-startup-id xrandr --output eDP-1 --mode 1920x1080
@@ -310,8 +310,8 @@ bindsym mod1+XF86Favorites exec --no-startup-id "~/.scripts/screen_capture -q"
 
 
 # Thinkpad trackpoint setting
-#exec_always --no-startup-id echo 210 | sudo tee /sys/devices/platform/i8042/serio1/serio2/sensitivity
-#exec_always --no-startup-id echo 120 | sudo tee /sys/devices/platform/i8042/serio1/serio2/speed
+#exec_always --no-startup-id echo 210 | tee /sys/devices/platform/i8042/serio1/serio2/sensitivity
+#exec_always --no-startup-id echo 120 | tee /sys/devices/platform/i8042/serio1/serio2/speed
 
 # Screenshot
 bindsym --release Print exec --no-startup-id "~/.scripts/screenshots"
@@ -323,7 +323,7 @@ exec --no-startup-id dropbox-cli start
 # Performance tuning
 # https://developer.ridgerun.com/wiki/index.php/Linux_Performance_and_Tuning_Tricks
 # Tuning Write/Read memory operations. 1500 is suggested by powertop
-exec_always --no-startup-id echo 1500 | sudo tee /proc/sys/vm/dirty_writeback_centisecs
+exec_always --no-startup-id echo 1500 | tee /proc/sys/vm/dirty_writeback_centisecs
 
 #shortcut for disable/enable the gap
 #bindsym $mod+o exec --no-startup-id "if [ `i3-msg -t get_tree | grep -Po \
