@@ -1,0 +1,12 @@
+[Unit]
+Description=WPA supplicant daemon (interface- and nl80211 driver-specific version)
+
+# NetworkManager users will probably want the dbus version instead.
+
+[Service]
+Type=idle
+ExecStart= /home/nima/.scripts/mywifi
+
+[Install]
+Alias= multi-user.target.wants/wpa_supplicant.service
+
