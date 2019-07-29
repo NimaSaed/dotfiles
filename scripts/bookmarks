@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+bookmarkFile=${HOME}/Dropbox/Notes/Personal/bookmarks.json
+BROWSER=firefox
+
+xnb=$(xrdb -query | grep -w background | cut -f2)
+xnf=$(xrdb -query | grep -w foreground | cut -f2)
+xsb=$(xrdb -query | grep -w color4 | cut -f2)
+xsf=$(xrdb -query | grep -w color10 | cut -f2)
+
+dmenu="dmenu -l 5 -i -fn Hack:size=9 -p bookmark: -sb $xsb -sf $xsf -nb $xnb -nf $xnf"
+
+selected=$(jq '..|.? | select(.type == "text/x-moz-place") | .title' $bookmarkFile | $dmenu )
+if [ -n "$selected" ]; then
+    url=$(jq '..|.? | select(.title == '"$selected"' ) | .uri' $bookmarkFile)
+fi
+
+if [ -n "$url" ]; then
+    url=$(echo $url | sed -e 's/"//g')
+    $BROWSER $url
+fi

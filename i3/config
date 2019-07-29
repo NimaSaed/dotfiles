@@ -41,7 +41,10 @@ bindsym $mod+Shift+q kill
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
-bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -i -fn Hack -sb '$xforeground' -sf '$xbackground' -nb '$xbackground' -nf '$xforeground'"
+bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -i -fn Hack:size=9 -p run: -sb '$xforeground' -sf '$xbackground' -nb '$xbackground' -nf '$xforeground'"
+
+# start dmenu bookmark
+bindsym $mod+b exec --no-startup-id "~/.scripts/bookmarks"
 
 
 # change focus
@@ -293,7 +296,7 @@ bindsym XF86AudioMicMute exec --no-startup-id amixer set Capture toggle
 exec --no-startup-id "xbacklight -set 20"
 bindsym XF86MonBrightnessDown exec --no-startup-id "xbacklight - 10"
 bindsym XF86MonBrightnessUp exec --no-startup-id "xbacklight + 10"
-bindsym $mod+b exec --no-startup-id "xbacklight -set 0"
+#bindsym $mod+b exec --no-startup-id "xbacklight -set 0"
 
 # Display
 exec_always --no-startup-id xrandr --output eDP-1 --mode 1920x1080
