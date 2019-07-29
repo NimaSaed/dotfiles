@@ -12,6 +12,8 @@ xorg-xinit \
 xorg-server \
 xorg-xrandr \
 xorg-xbacklight \
+xorg-xinput \
+xclip \
 ttf-hack \
 firefox \
 otf-font-awesome \
@@ -41,6 +43,7 @@ vulkan-intel \
 xf86-video-intel \
 docker \
 docker-compose \
+vagrant \
 libva-intel-driver
 
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
