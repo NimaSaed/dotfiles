@@ -51,3 +51,6 @@ ln -sfn ${PWD}/vifm/ ${HOME}/.vifm
 
 # git config
 ln -sfn ${PWD}/git/.gitconfig ${HOME}
+
+# Termite
+ln -sfn ${PWD}/termite/ ${HOME}/.config/
