@@ -1,6 +1,8 @@
 sudo pacman -Syu
 
 sudo pacman -S \
+base-devel \
+wpa_supplicant \
 git \
 i3-wm \
 i3blocks \
