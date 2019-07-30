@@ -1,3 +1,6 @@
+username=$(id -u --name)
+dir=$(dirname $(dirname $(readlink -f "$0")))
+
 sudo pacman -Syu
 
 sudo pacman -S \
@@ -7,7 +10,7 @@ git \
 i3-wm \
 i3blocks \
 i3lock \
-vim \
+gvim \
 feh \
 acpi \
 xorg-xinit \
@@ -48,12 +51,12 @@ docker-compose \
 vagrant \
 libva-intel-driver
 
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+curl -fLo ${HOME}/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 vim +PlugInstall +qall
 git clone https://aur.archlinux.org/yay.git
 cd yay
 makepkg -si --noconfirm
-cd ~
+cd ${HOME}
 rm -Rf yay
 
 yay -S --nocleanmenu --nodiffmenu \
@@ -68,13 +71,18 @@ sudo systemctl enable tlp-sleep.service
 sudo systemctl mask systemd-rfkill.service
 sudo systemctl mask systemd-rfkill.socket
 
-sudo cp ../i3/lock.service /etc/systemd/system/
+sudo cp ${dir}/i3/lock.service /etc/systemd/system/
 sudo systemctl enable lock.service
 
-sudo cp ../wifi/wpa_supplicant.service /etc/systemd/system/
+sudo cp ${dir}/wifi/wpa_supplicant.service /etc/systemd/system/
 sudo systemctl enable wpa_supplicant.service
 
 sudo sed -i 's/dockerd -H/dockerd --data-root=\/home\/.docker -H/g' /usr/lib/systemd/system/docker.service
 sudo systemctl enable docker
 
-sudo usermod -a -G wheel,docker,vboxusers nima
+sudo usermod -a -G wheel,docker,vboxusers ${username}
+
+git clone https://git.suckless.org/st st-git
+patch -d st-git/ -p1 < ${dir}/st/st-x11Hack-20190730-f484d74.diff
+sudo make -C st-git/ install
+rm -rf st-git
