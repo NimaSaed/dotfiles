@@ -18,8 +18,8 @@ esac
 
 newcolor=""
 oldcolor=""
-for i in {0..9} {A..F}; do
-    newcolor="${newcolor}\n$(cat ~/.colors/base16-solarized-${theme} | grep -w "#define base0${i}")"
+for i in {0..9} {A..I}; do
+    newcolor="${newcolor}\n$(cat ~/.colors/solarized-${theme} | grep -w "#define base0${i}")"
     oldcolor="${oldcolor}\n$(cat ~/.Xresources | grep -w "#define base0${i}")"
 done
 
@@ -28,7 +28,7 @@ sed ':a;N;$!ba;s/'"${oldcolor}"'/'"${newcolor}"'/' <~/.Xresources.tmp >~/.Xresou
 rm .Xresources.tmp
 xrdb -merge ~/.Xresources
 i3-msg reload > /dev/null
-hsetroot -solid "$(xrdb -query | grep -w color10 | cut -f2)"
+hsetroot -solid "$(xrdb -query | grep -w color8 | cut -f2)"
 
 # If there is a terminal open
 terminal_psid=$(ps -e | grep -w ${terminal} | grep -oP '[\d]{3,}')

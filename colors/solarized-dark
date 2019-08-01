@@ -1,25 +1,22 @@
-Xft.dpi:        120
-
-! theme light
-#define base00 #fdf6e3
+#define base00 #002b36
 #define base01 #dc322f
 #define base02 #859900
 #define base03 #b58900
 #define base04 #268bd2
 #define base05 #6c71c4
 #define base06 #2aa198
-#define base07 #657b83
-#define base08 #93a1a1
+#define base07 #93a1a1
+#define base08 #657b83
 #define base09 #b52828
 #define base0A #677300
 #define base0B #8f6400
 #define base0C #2272ab
 #define base0D #545f9e
 #define base0E #d33682
-#define base0F #002b36
-#define base0G #586e75
-#define base0H #fdf6e3
-#define base0I #586e75
+#define base0F #fdf6e3
+#define base0G #93a1a1
+#define base0H #002b36
+#define base0I #93a1a1
 
 ! special
 *.foreground:   base0G

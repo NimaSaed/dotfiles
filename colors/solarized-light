@@ -1,6 +1,3 @@
-Xft.dpi:        120
-
-! theme light
 #define base00 #fdf6e3
 #define base01 #dc322f
 #define base02 #859900
