@@ -230,9 +230,9 @@ bar {
         #Where              #Border         #Background     #Text
         focused_workspace   $xbackground    $xbackground    $xcolor15
         active_workspace    $xbackground    $xbackground    $xcolor15
-        inactive_workspace  $xbackground    $xbackground    $xcolor11
+        inactive_workspace  $xbackground    $xbackground    $xcolor7
         urgent_workspace    $xbackground    $xbackground    $xcolor1
-        binding_mode        $xcolor1        $xcolor9        $xcolor15
+        binding_mode        $xcolor1        $xcolor1        $xcolor0
     }
 }
 
@@ -254,7 +254,7 @@ bindsym $mod+Shift+x exec --no-startup-id bash ~/.config/i3/lock.sh
 # Background
 #exec_always --no-startup-id ~/.scripts/bing-background
 #exec_always --no-startup-id feh --bg-fill --no-fehbg ~/.wallpaper
-exec_always --no-startup-id hsetroot -solid "$xcolor10"
+exec_always --no-startup-id hsetroot -solid "$xcolor8"
 
 # Compton
 #exec_always --no-startup-id compton --config /home/nima/.config/compton/compton.conf
