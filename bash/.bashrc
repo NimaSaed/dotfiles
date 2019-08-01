@@ -3,7 +3,7 @@
 export TERMINAL="st"
 export TERMCMD="st"
 
-PS1='\[\e[0;49;97m\] >_ \[\e[0;49;96m\](\[\e[0;49;36m\]\W\[\e[0;49;96m\])\[\e[0;49;95m\] '
+PS1='\[\e[0;49;97m\] >_ \[\e[0;49;36m\](\[\e[0;49;96m\]\W\[\e[0;49;36m\])\[\e[0;49;97m\] '
 eval $(dircolors ~/.dircolors/dircolors)
 # History Setting
 HISTSIZE=10000000
@@ -142,4 +142,12 @@ function rate() {
 
 function dic() {
     curl -s dict://dict.org/d:"$@"
+}
+
+# list users with their login and name (just for educational purpose)
+function list_users() {
+    while IFS=: read login a b c name e;
+    do
+        printf "%-30s %s\n" "$login" "$name";
+    done < /etc/passwd
 }
