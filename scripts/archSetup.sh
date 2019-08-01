@@ -41,6 +41,7 @@ mupdf \
 highlight \
 hsetroot \
 mpv \
+youtube-dl \
 dmenu \
 pacman-contrib \
 mesa \
@@ -49,7 +50,8 @@ xf86-video-intel \
 docker \
 docker-compose \
 vagrant \
-libva-intel-driver
+libva-intel-driver \
+ntp
 
 curl -fLo ${HOME}/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 vim +PlugInstall +qall
@@ -66,6 +68,10 @@ dropbox \
 dropbox-cli
 
 sudo systemctl enable dhcpcd.service
+
+sudo systemctl enable ntpd
+sudo ststemctl start ntpd
+
 sudo systemctl enable tlp.service
 sudo systemctl enable tlp-sleep.service
 sudo systemctl mask systemd-rfkill.service
