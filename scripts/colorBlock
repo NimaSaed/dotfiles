@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# Show the terminal colourscheme as blocks
-# Inspired by u/dkeg
-# Cheers! Addy
-
 f=3 b=4
 for j in f b; do
   for i in {0..7}; do
@@ -13,13 +9,12 @@ done
 d=$'\e[1m'
 t=$'\e[0m'
 v=$'\e[7m'
-
+echo -e "\e[0;49;97m 1      9 2     10 3     11 4     12 5     13 6     14"
 cat << EOF
- 1     9  2     10 3     11 4     12 5     13 6     14
  $f1██████$d██$t $f2██████$d██$t $f3██████$d██$t $f4██████$d██$t $f5██████$d██$t $f6██████$d██$t
  $f1██████$d██$t $f2██████$d██$t $f3██████$d██$t $f4██████$d██$t $f5██████$d██$t $f6██████$d██$t
  $f1██████$d██$t $f2██████$d██$t $f3██████$d██$t $f4██████$d██$t $f5██████$d██$t $f6██████$d██$t
  $ft██████$d$f7██$t $ft██████$d$f7██$t $ft██████$d$f7██$t $ft██████$d$f7██$t $ft██████$d$f7██$t $ft██████$d$f7██$t
- 7     15
 EOF
 
+echo -e "\e[0;49;97m 7     15"
