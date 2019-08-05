@@ -13,8 +13,9 @@ call plug#end()
 """""""""""""""""""""""""""
 let mapleader = " "
 filetype plugin on
-set path=/home/nima/**
+set path+=**
 set wildmenu
+"Set wildignore+=
 
 "Set clipboard to be shared with middle click
 set clipboard=unnamed
