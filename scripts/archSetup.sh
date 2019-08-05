@@ -72,7 +72,7 @@ dropbox-cli
 sudo systemctl enable dhcpcd.service
 
 sudo systemctl enable ntpd
-sudo ststemctl start ntpd
+sudo systemctl start ntpd
 
 sudo systemctl enable tlp.service
 sudo systemctl enable tlp-sleep.service
