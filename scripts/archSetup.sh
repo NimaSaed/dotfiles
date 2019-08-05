@@ -94,3 +94,7 @@ git clone https://git.suckless.org/st st-git
 patch -d st-git/ -p1 < ${dir}/st/st-x11Hack-20190730-f484d74.diff
 sudo make -C st-git/ install
 rm -rf st-git
+
+# To fix the firefox gpu problem
+echo -en "Section \"OutputClass\"\n  Identifier \"Intel Graphics\"\n  MatchDriver \"i915\"\n  Driver \"intel\"\n  Option \"TearFree\" \"true\"\nEndSection" | sudo tee /etc/X11/xorg.conf.d/20-intel.conf > /dev/null
+

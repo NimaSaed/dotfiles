@@ -12,7 +12,7 @@ function install_os()
 {
     echo "installing OS"
 
-    cryptosetup open /dev/${lvm} cryptolvm
+    cryptsetup open /dev/${lvm} cryptolvm
     mkfs.ext4 /dev/mapper/${root_drive}
     mount /dev/mapper/${root_drive} /mnt
     mkdir /mnt/home
