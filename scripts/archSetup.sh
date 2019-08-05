@@ -51,7 +51,9 @@ docker \
 docker-compose \
 vagrant \
 libva-intel-driver \
-ntp
+ntp \
+jq \
+aria2
 
 curl -fLo ${HOME}/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 vim +PlugInstall +qall
