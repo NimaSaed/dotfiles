@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
+wireless=$(ip link  | grep -Po 'w[\w\d]{1,}')
+
 #sudo systemctl start wpa_supplicant.service
-wpa_supplicant -D nl80211 -i wlp58s0 -c /home/nima/Dropbox/Work/Quintiq/DS-things/wpa_supplicant-nl80211-wlp58s0.conf
+wpa_supplicant -D nl80211 -i $wireless -c /home/nima/Dropbox/Arch\ Linux/wpa_supplicant.conf
