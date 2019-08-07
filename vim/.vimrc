@@ -1,48 +1,35 @@
-"""""""""""""""""""""""""""
-" Plugins
-"""""""""""""""""""""""""""
+" vim:foldmethod=marker:foldlevel=0
+
+" Plugins {{{
 call plug#begin('~/.vim/plugged')
 
 Plug 'wellle/targets.vim'
-Plug 'davidhalter/jedi-vim'
-Plug 'chriskempson/base16-vim'
 Plug 'iamcco/markdown-preview.vim'
 Plug 'junegunn/goyo.vim'
 
 call plug#end()
-"""""""""""""""""""""""""""
+
+" }}}
+
+" General Setting {{{
+
 let mapleader = " "
+
 filetype plugin on
 set path+=**
 set wildmenu
 "Set wildignore+=
 
 "Set clipboard to be shared with middle click
-set clipboard=unnamed
+set clipboard=unnamedplus
 
 "set laststatus=2
 set encoding=utf-8
 
-"Turn spelling on only when the file is .txt, .md or gitcommit
-augroup markdownSpell
-    autocmd!
-    autocmd FileType markdown setlocal spell
-    autocmd BufRead,BufNewFile *.md setlocal spell
-    autocmd FileType text setlocal spell
-    autocmd BufRead,BufNewFile *.txt setlocal spell
-    autocmd FileType gitcommit setlocal spell
-augroup END
-set spelllang=en
-
-" Turn on spelling on/off
-map <leader>s :setlocal spell! spelllang=en_us<CR>
-
-" Do not check url spelling (thanks to http://www.panozzaj.com/blog/2016/03/21/ignore-urls-and-acroynms-while-spell-checking-vim/)
-autocmd BufRead * syn match UrlNoSpell '\w\+:\/\/[^[:space:]]\+' contains=@NoSpell
-
 " Toggle paste mode
 set pastetoggle=<F12>
 
+" Disable arrow keys
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
@@ -60,34 +47,6 @@ set incsearch
 
 " enable search highlight
 set hlsearch
-
-" enable syntax highlighting
-syntax enable
-colorscheme base16-solarized-light
-highlight LineNr ctermfg=none ctermbg=none
-highlight CursorLineNr ctermbg=none ctermfg=red
-
-" turn on/off syntax color
-function! HighlighColor()
-    if exists("g:syntax_on")
-        syntax off
-    else
-        syntax enable
-        highlight LineNr ctermfg=none ctermbg=none
-        highlight CursorLineNr ctermbg=none ctermfg=red
-    endif
-endfunction
-
-map <Leader>h :call HighlighColor()<CR>
-
-" show line numbers
-set number relativenumber
-
-augroup numbertoggle
-  autocmd!
-  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-augroup END
 
 " set tabs to have 4 spaces
 set ts=4
@@ -127,62 +86,79 @@ set splitbelow splitright
 " Disables automatic commenting on newline:
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
-""""""""""""""""""""""""""""""""""""""""
+" }}}
 
-""""""""""""""""""""""""""""""""""""""
-""""""""""""""""""""" Markdown preview
-""""""""""""""""""""""""""""""""""""""
+" Spelling {{{
+"Turn spelling on only when the file is .txt, .md or gitcommit
+augroup markdownSpell
+    autocmd!
+    autocmd FileType markdown setlocal spell
+    autocmd BufRead,BufNewFile *.md setlocal spell
+    autocmd FileType text setlocal spell
+    autocmd BufRead,BufNewFile *.txt setlocal spell
+    autocmd FileType gitcommit setlocal spell
+augroup END
+set spelllang=en
+
+" Turn on spelling on/off
+map <leader>s :setlocal spell! spelllang=en_us<CR>
+
+" Do not check url spelling (thanks to http://www.panozzaj.com/blog/2016/03/21/ignore-urls-and-acroynms-while-spell-checking-vim/)
+autocmd BufRead * syn match UrlNoSpell '\w\+:\/\/[^[:space:]]\+' contains=@NoSpell
+
+" }}}
+
+" Colors {{{
+
+" enable syntax highlighting
+syntax enable
+colorscheme base16-solarized-light
+
+" Numbers color
+highlight LineNr ctermfg=7 ctermbg=0
+highlight CursorLineNr ctermfg=9 ctermbg=0
+
+" Menu color (auto complete)
+highlight Pmenu ctermfg=0 ctermbg=12
+highlight PmenuSel ctermfg=0 ctermbg=9
+
+" Status line and wild menu colots
+highlight StatusLine ctermbg=8 ctermfg=0
+highlight WildMenu ctermbg=12 ctermfg=0
+
+" Selected text in visual mode
+highlight Visual ctermbg=15
+
+" turn on/off syntax color
+function! HighlighColor()
+    if exists("g:syntax_on")
+        syntax off
+    else
+        syntax enable
+        highlight LineNr ctermfg=none ctermbg=none
+        highlight CursorLineNr ctermbg=none ctermfg=red
+    endif
+endfunction
+
+map <Leader>h :call HighlighColor()<CR>
+
+" }}}
+
+" Markdown preview {{{
 let g:mkdp_path_to_chrome = 'firefox --profile ~/.mozilla/firefox/5d4xorxm.frameless/'
 map <leader>v :MarkdownPreview<CR>
 map <leader>b :MarkdownPreviewStop<CR>
 
-""""""""""""""""""""""""""""""""""""""
-"""""""""""""""""""""""""""" Save fold
-""""""""""""""""""""""""""""""""""""""
-augroup saveFolding
-    autocmd!
-    autocmd BufWinLeave note_index.md mkview
-    autocmd BufWinEnter note_index.md silent loadview
-augroup END
+" }}}
 
-""""""""""""""""""""""""""""""""""""""
-"""""""""""""""""""""" Markdown Syntax
-""""""""""""""""""""""""""""""""""""""
-"let g:vim_markdown_folding_disabled = 1
-"let g:vim_markdown_new_list_item_indent = 0
-""""""""""""""""""""""""""""""""""""""
-""""""""""""""""""""""""""""""""" Goyo
-""""""""""""""""""""""""""""""""""""""
-let g:goyo_width = 80
-let g:goyo_height = 35
-map <leader>r :Goyo<CR>
+" Markdown Syntax {{{
 
-function! s:goyo_enter()
-    augroup numbertoggle
-      set nonumber norelativenumber
-      autocmd!
-      autocmd BufEnter,FocusGained,InsertLeave * set norelativenumber
-      autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-    augroup END
-endfunction
+let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_new_list_item_indent = 0
 
-function! s:goyo_leave()
-    augroup numbertoggle
-      set number relativenumber
-      autocmd!
-      autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-      autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-    augroup END
-        highlight LineNr ctermfg=none ctermbg=none
-        highlight CursorLineNr ctermbg=none ctermfg=red
-endfunction
+" }}}
 
-autocmd! User GoyoEnter nested call <SID>goyo_enter()
-autocmd! User GoyoLeave nested call <SID>goyo_leave()
-
-""""""""""""""""""""""""""""""""""""""
-"""""""""""""""""""" Markdown Snippets
-""""""""""""""""""""""""""""""""""""""
+" Markdown Snippets {{{
 autocmd Filetype markdown map <Space><Space> <Esc>/<++><Enter>"_c4l
 
 autocmd Filetype markdown inoremap ,1 #<Space>
@@ -216,7 +192,68 @@ map <leader>o ci[o<Esc>0
 " Mark task as move forward
 map <leader>m 0f[dwdwi> <Esc>0
 
+" }}}
+
+" Save fold {{{
+augroup saveFolding
+    autocmd!
+    autocmd BufWinLeave note_index.md mkview
+    autocmd BufWinEnter note_index.md silent loadview
+augroup END
+
+" }}}
+
+" Goyo {{{
+
+let g:goyo_width = 80
+let g:goyo_height = 35
+map <leader>r :Goyo<CR>
+
+function! s:goyo_enter()
+    augroup numbertoggle
+      set nonumber norelativenumber
+      autocmd!
+      autocmd BufEnter,FocusGained,InsertLeave * set norelativenumber
+      autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+    augroup END
+endfunction
+
+function! s:goyo_leave()
+    augroup numbertoggle
+      set number relativenumber
+      autocmd!
+      autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+      autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+    augroup END
+        highlight LineNr ctermfg=none ctermbg=none
+        highlight CursorLineNr ctermbg=none ctermfg=red
+endfunction
+
+autocmd! User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoLeave nested call <SID>goyo_leave()
+
+" }}}
+
+" Bash Snippets {{{
+autocmd Filetype sh map <Space><Space> <Esc>/<++><Enter>"_c4l
+
+autocmd Filetype sh inoremap \sh #!/usr/bin/env bash<CR>set -o nounset # Treat unset variables as an error
+autocmd Filetype sh inoremap \for for i in $ ;<CR>do<CR><++><CR>done<Esc><<3kf$a
+
 "================================================================================
 " To add banner list this
 "================================================================================
-autocmd Filetype * inoremap \ban <Esc>80i=<Esc>A<Enter><Enter><Esc>80i=<Esc>k^i<space>
+autocmd Filetype sh inoremap \ban <Esc>80i=<Esc>A<Enter><Enter><Esc>80i=<Esc>k^i<space>
+
+" }}}
+
+" show line numbers {{{
+set number relativenumber
+
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
+
+" }}}
