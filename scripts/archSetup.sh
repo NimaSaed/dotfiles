@@ -55,8 +55,6 @@ ntp \
 jq \
 aria2
 
-curl -fLo ${HOME}/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-vim +PlugInstall +qall
 git clone https://aur.archlinux.org/yay.git
 cd yay
 makepkg -si --noconfirm
@@ -67,7 +65,13 @@ yay -S --nocleanmenu --nodiffmenu \
 skypeforlinux-stable-bin \
 virtualbox-ext-oracle \
 dropbox \
-dropbox-cli
+dropbox-cli \
+vim-youcompleteme-git \
+vim-markdown \
+vim-base16-git \
+vim-plug
+
+vim +PlugInstall +qall
 
 sudo systemctl enable dhcpcd.service
 
@@ -98,3 +102,6 @@ rm -rf st-git
 # To fix the firefox gpu problem
 echo -en "Section \"OutputClass\"\n  Identifier \"Intel Graphics\"\n  MatchDriver \"i915\"\n  Driver \"intel\"\n  Option \"TearFree\" \"true\"\nEndSection" | sudo tee /etc/X11/xorg.conf.d/20-intel.conf > /dev/null
 
+# Change pacman setting
+sed -e 's/#Color/Color/' -e 's/#TotalDownload/TotalDownload/' -e 's/#VerbosePkgLists/VerbosePkgLists/' /etc/pacman.conf > /tmp/pacman.conf
+sudo cp /tmp/pacman.conf /etc/pacman.conf
