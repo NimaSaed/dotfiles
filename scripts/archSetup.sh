@@ -29,7 +29,6 @@ openssh \
 imagemagick \
 scrot \
 wget \
-alsa-utils \
 sysstat \
 screenfetch \
 go \
@@ -53,7 +52,10 @@ vagrant \
 libva-intel-driver \
 ntp \
 jq \
-aria2
+aria2 \
+bluez-utils \
+pulseaudio \
+pulseaudio-bluetooth
 
 git clone https://aur.archlinux.org/yay.git
 cd yay

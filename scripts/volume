@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
-Mute=$(amixer get Master | grep off)
-if [ "$?" == "1" ]; then
+activeDevice=$(pactl info | grep Default\ Sink | awk '{print $3}')
+Mute=$(pactl list sinks | grep $activeDevice -A 7 | grep Mute | awk '{print $2}')
+if [ "$Mute" == "no" ]; then
     icon="";
-    vol=$(amixer get Master | grep Mono: | awk {'print $4'} | sed 's/\]//' | sed 's/\[//');
+    vol=$(pactl list sinks | grep $activeDevice -A 7 | grep -m 1 -oE '[0-9]{1,}%' | grep -m 1 '');
 else
-    vol=$(amixer get Master | grep Mono: | awk {'print $4'} | sed 's/\]//' | sed 's/\[//');
+    vol=$(pactl list sinks | grep $activeDevice -A 7 | grep -m 1 -oE '[0-9]{1,}%' | grep -m 1 '');
     icon="";
 fi
 echo -n "$vol $icon";
