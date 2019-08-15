@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -o nounset # Treat unset variables as an error
+
+airpod=$(bluetoothctl devices | grep AirPods | awk '{print $2}')
+bluetoothctl power on
+sleep 0.5
+bluetoothctl connect $airpod
+
+exit 0
