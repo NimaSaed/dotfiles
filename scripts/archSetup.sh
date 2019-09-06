@@ -63,7 +63,7 @@ makepkg -si --noconfirm
 cd ${HOME}
 rm -Rf yay
 
-yay -S --nocleanmenu --nodiffmenu \
+yay -S --nocleanmenu --nodiffmenu --noremovemake \
 skypeforlinux-stable-bin \
 virtualbox-ext-oracle \
 dropbox \
