@@ -63,7 +63,8 @@ alias pacman="sudo pacman"
 # export DOCKER_HOST=tcp://0.0.0.0:2375
 
 #Default editor
-export EDITOR='vim'
+export EDITOR=vim
+export VISUAL=vim
 export LC_ALL='en_US.UTF-8'
 
 export LESS=-R
@@ -76,7 +77,7 @@ export LESS_TERMCAP_us=$'\E[4;49;34m'     # begin underline
 export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
 
 if [ -z "$TMUX" ]; then
-    tmux a -t Main || tmux new -s Main
+    tmux new -t Main
 fi
 
 export n=~/Dropbox/Notes/
@@ -111,7 +112,7 @@ function dockershellhere() {
 
 alias nginxservehere='docker run --rm -it -p 80:80 -p 443:443 -v "$(pwd):/srv/data" nimasaed/nginxserve'
 
-function msf() {
+function msf-docker() {
     if [ -z "$(docker network ls | grep -w msf)" ];
     then
         docker network create --subnet=172.18.0.0/16 msf
@@ -120,8 +121,9 @@ function msf() {
     then
         docker run --ip 172.18.0.2 --network msf --rm --name postgres -v "${HOME}/.msf4/database:/var/lib/postgresql/data" -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_DB=msf -d postgres:11-alpine
     fi
-    docker pull metasploitframework/metasploit-framework:latest
-    docker run --rm -it --network msf --name msf --ip 172.18.0.3 -e DATABASE_URL='postgres://postgres:postgres@172.18.0.2:5432/msf' -v "${HOME}/.msf4:/home/msf/.msf4" -p 8443-8500:8443-8500 metasploitframework/metasploit-framework
+    #docker pull metasploitframework/metasploit-framework:latest
+    #docker run --rm -it -u 0 --network msf --name msf --ip 172.18.0.3 -e DATABASE_URL='postgres://postgres:postgres@172.18.0.2:5432/msf' -v "${HOME}/.msf4:/home/msf/.msf4" -p 8443-8500:8443-8500 metasploitframework/metasploit-framework
+    docker run --rm -it -u 0 --network msf --name msf --ip 172.18.0.3 -v "${HOME}/.msf4:/home/msf/.msf4" -p 8443-8500:8443-8500 metasploitframework/metasploit-framework
  }
 
 function public_ip() {
