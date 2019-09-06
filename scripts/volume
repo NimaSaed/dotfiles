@@ -1,11 +1,29 @@
 #!/usr/bin/env bash
+
 activeDevice=$(pactl info | grep Default\ Sink | awk '{print $3}')
-Mute=$(pactl list sinks | grep $activeDevice -A 7 | grep Mute | awk '{print $2}')
-if [ "$Mute" == "no" ]; then
-    icon="";
+speakerMute=$(pactl list sinks | grep $activeDevice -A 7 | grep Mute | awk '{print $2}')
+
+if [ "$speakerMute" == "no" ]; then
     vol=$(pactl list sinks | grep $activeDevice -A 7 | grep -m 1 -oE '[0-9]{1,}%' | grep -m 1 '');
+    len=$(( ${#vol} - 1 ))
+    if [ ${vol:0:$len} -gt 40 ]; then
+       speakerIcon="<span color='$(xrdb -query | grep -w color2 | cut -f2)'></span>"
+    elif [ ${vol:0:$len} -gt 0 ]; then
+       speakerIcon="<span color='$(xrdb -query | grep -w color2 | cut -f2)'></span>"
+   else
+       speakerIcon="<span color='$(xrdb -query | grep -w color2 | cut -f2)'></span>"
+    fi
 else
     vol=$(pactl list sinks | grep $activeDevice -A 7 | grep -m 1 -oE '[0-9]{1,}%' | grep -m 1 '');
-    icon="";
+    speakerIcon="<span color='$(xrdb -query | grep -w color1 | cut -f2)'></span>";
 fi
-echo -n "$vol $icon";
+
+microphoneMute=$(pactl list sources | grep input -A 7 | grep Mute | awk '{print $2}')
+
+if [ "$microphoneMute" == "no" ]; then
+    micIcon="<span color='$(xrdb -query | grep -w color2 | cut -f2)'></span>"
+else
+    micIcon="<span color='$(xrdb -query | grep -w color1 | cut -f2)'></span>"
+fi
+
+echo -n "$vol $speakerIcon $micIcon";
