@@ -6,6 +6,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'wellle/targets.vim'
 Plug 'iamcco/markdown-preview.vim'
 Plug 'junegunn/goyo.vim'
+Plug 'tyru/open-browser.vim'
 
 call plug#end()
 
@@ -14,6 +15,9 @@ call plug#end()
 " General Setting {{{
 
 let mapleader = " "
+
+" Make backspace work
+set bs=2
 
 filetype plugin on
 set path+=**
@@ -257,3 +261,11 @@ augroup numbertoggle
 augroup END
 
 " }}}
+
+" Openbrower Setting {{{
+let g:netrw_nogx = 1 " disable netrw's gx mapping.
+nmap gx <Plug>(openbrowser-smart-search)
+vmap gx <Plug>(openbrowser-smart-search)
+
+" }}}
+
