@@ -105,7 +105,7 @@ augroup END
 set spelllang=en
 
 " Turn on spelling on/off
-map <leader>s :setlocal spell! spelllang=en_us<CR>
+map <leader>s :setlocal spell! spelllang=en <bar> call HighlighColor() <CR>
 
 " Do not check url spelling (thanks to http://www.panozzaj.com/blog/2016/03/21/ignore-urls-and-acroynms-while-spell-checking-vim/)
 autocmd BufRead * syn match UrlNoSpell '\w\+:\/\/[^[:space:]]\+' contains=@NoSpell
@@ -114,37 +114,49 @@ autocmd BufRead * syn match UrlNoSpell '\w\+:\/\/[^[:space:]]\+' contains=@NoSpe
 
 " Colors {{{
 
-" enable syntax highlighting
-syntax enable
-colorscheme base16-solarized-light
+autocmd VimEnter * call HighlighColor()
 
-" Numbers color
-highlight LineNr ctermfg=7 ctermbg=0
-highlight CursorLineNr ctermfg=9 ctermbg=0
+function! HighlighColor()
+    " enable syntax highlighting
+    syntax enable
+    colorscheme base16-solarized-light
 
-" Menu color (auto complete)
-highlight Pmenu ctermfg=0 ctermbg=12
-highlight PmenuSel ctermfg=0 ctermbg=9
+    " Numbers color
+    highlight LineNr ctermfg=7 ctermbg=0
+    highlight CursorLineNr ctermfg=9 ctermbg=0
 
-" Status line and wild menu colots
-highlight StatusLine ctermbg=8 ctermfg=0
-highlight WildMenu ctermbg=12 ctermfg=0
+    " Menu color (auto complete)
+    highlight Pmenu ctermfg=0 ctermbg=12
+    highlight PmenuSel ctermfg=0 ctermbg=9
 
-" Selected text in visual mode
-highlight Visual ctermbg=15
+    " Status line and wild menu colots
+    highlight StatusLine ctermbg=15 ctermfg=0
+    highlight WildMenu ctermbg=12 ctermfg=0
+
+    " Selected text in visual mode
+    highlight Visual ctermbg=15
+
+    " Folded Color
+    highlight Folded ctermfg=0 ctermbg=12
+
+    " Spelling Color
+    highlight SpellBad term=reverse cterm=undercurl ctermbg=224 gui=undercurl guisp=#dc322f
+    highlight SpellCap term=reverse cterm=undercurl ctermbg=81 gui=undercurl guisp=#268bd2
+    highlight SpellLocal term=underline cterm=undercurl ctermbg=14 gui=undercurl guisp=#2aa198
+    highlight SpellRare  term=reverse cterm=undercurl ctermbg=225 gui=undercurl guisp=#6c71c4
+endfunction
 
 " turn on/off syntax color
-function! HighlighColor()
+function! ToggleHighlighColor()
     if exists("g:syntax_on")
         syntax off
     else
         syntax enable
-        highlight LineNr ctermfg=none ctermbg=none
-        highlight CursorLineNr ctermbg=none ctermfg=red
+        call HighlighColor()
     endif
 endfunction
 
-map <Leader>h :call HighlighColor()<CR>
+map <Leader>h :call ToggleHighlighColor()<CR>
 
 " }}}
 
@@ -229,8 +241,7 @@ function! s:goyo_leave()
       autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
       autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
     augroup END
-        highlight LineNr ctermfg=none ctermbg=none
-        highlight CursorLineNr ctermbg=none ctermfg=red
+    call HighlighColor()
 endfunction
 
 autocmd! User GoyoEnter nested call <SID>goyo_enter()
@@ -268,4 +279,3 @@ nmap gx <Plug>(openbrowser-smart-search)
 vmap gx <Plug>(openbrowser-smart-search)
 
 " }}}
-
