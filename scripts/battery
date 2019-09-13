@@ -56,7 +56,7 @@ else
     IND=''
 fi
 
-echo -n "<span color='$color'> $NUM% $IND $hour:$min </span>"
+echo "<span color='$color'> $NUM% $IND $hour:$min </span>"
 
 
 

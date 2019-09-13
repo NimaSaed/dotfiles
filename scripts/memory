@@ -49,4 +49,4 @@ END {
 ' /proc/meminfo)
 #free -mt | grep ^Total | awk '{ print substr($4/1000,0,5) "/" substr($2/1000,0,5) }'
 #free -mt | grep ^Total | awk '{ print substr($4/1000,0,5) }'
-echo -n "" $value
+echo "" $value

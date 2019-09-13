@@ -2,4 +2,4 @@
 
 value=$(mpstat 1 1 | grep Average | awk {'print substr(100-$12,0,5)'})
 
-printf " %2.2f%%" $value
+printf " %2.2f%%\n" $value

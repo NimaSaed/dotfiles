@@ -43,4 +43,6 @@ elif [[ $QUALITY -lt 40 ]]; then
     color="$(xrdb -query | grep -w color1 | cut -f2)"
 fi
 
-echo -n "<span color='$color'>  $QUALITY% </span>"
+echo " $QUALITY%"
+echo " $QUALITY%"
+echo "$color"

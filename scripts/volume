@@ -26,4 +26,4 @@ else
     micIcon="<span color='$(xrdb -query | grep -w color1 | cut -f2)'></span>"
 fi
 
-echo -n "$vol $speakerIcon $micIcon";
+echo "$vol $speakerIcon $micIcon";

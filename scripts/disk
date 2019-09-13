@@ -37,4 +37,4 @@ END {
 }
 ')
 
-echo -n "" $value
+echo "" $value
