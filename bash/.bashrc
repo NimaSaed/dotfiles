@@ -3,8 +3,8 @@
 export TERMINAL="st"
 export TERMCMD="st"
 
-PS1='\[\e[0;49;97m\] >_ \[\e[0;49;36m\](\[\e[0;49;96m\]\W\[\e[0;49;36m\])\[\e[0;49;97m\] '
-eval $(dircolors ~/.dircolors/dircolors)
+PS1='\[\e[0;49;39m\] >_ \[\e[0;49;36m\](\[\e[0;49;96m\]\W\[\e[0;49;36m\])\[\e[0;49;39m\] '
+eval $(dircolors -b ~/.dircolors/dircolors)
 # History Setting
 HISTSIZE=10000000
 HISTCONTROL=ignoreboth
@@ -49,15 +49,13 @@ alias grep="grep --color=auto"
 alias fgrep="fgrep --color=auto"
 alias egrep="egrep --color=auto"
 
-#other
-alias rg='ranger'
-alias standby='cmatrix -aC green -b -u 6'
-alias x='startx'
-
 # to put on system clipboard
 alias xclip='xclip -selection c'
+
 alias p="python"
-alias pacman="sudo pacman"
+
+# cat with line number
+alias ccat='cat -n'
 
 # add docker host for windows docker and WSL
 # export DOCKER_HOST=tcp://0.0.0.0:2375
@@ -70,11 +68,11 @@ export LC_ALL='en_US.UTF-8'
 export LESS=-R
 export LESS_TERMCAP_mb=$'\E[4;49;31m'     # begin blink
 export LESS_TERMCAP_md=$'\E[1;49;36m'     # begin bold
-export LESS_TERMCAP_me=$'\E[0m'        # reset bold/blink
-export LESS_TERMCAP_so=$'\E[7;49;35m' # begin reverse video
-export LESS_TERMCAP_se=$'\E[0m'        # reset reverse video
+export LESS_TERMCAP_me=$'\E[0m'           # reset bold/blink
+export LESS_TERMCAP_so=$'\E[7;49;35m'     # begin reverse video
+export LESS_TERMCAP_se=$'\E[0m'           # reset reverse video
 export LESS_TERMCAP_us=$'\E[4;49;34m'     # begin underline
-export LESS_TERMCAP_ue=$'\E[0m'        # reset underline
+export LESS_TERMCAP_ue=$'\E[0m'           # reset underline
 
 if [ -z "$TMUX" ]; then
     tmux new -t Main
@@ -91,7 +89,7 @@ wttr()
 {
     local request="wttr.in/${1-}?0"
     [ "$COLUMNS" -lt 125 ] && request+='?n'
-    curl -H "Accept-Language: ${LANG%_*}" --compressed "$request"
+    curl -SH "Accept-Language: ${LANG%_*}" --compressed "$request"
 }
 
 alias arch="docker run --rm -it archlinux/base"
