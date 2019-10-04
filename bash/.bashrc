@@ -1,4 +1,4 @@
-# set -o vi
+set -o vi
 #export TERM="screen-256color"
 export TERMINAL="st"
 export TERMCMD="st"
