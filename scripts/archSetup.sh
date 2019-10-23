@@ -60,7 +60,7 @@ pulseaudio-bluetooth
 git clone https://aur.archlinux.org/yay.git
 cd yay
 makepkg -si --noconfirm
-cd ${HOME}
+cd ${dir}/scripts/
 rm -Rf yay
 
 yay -S --nocleanmenu --nodiffmenu --noremovemake \
@@ -75,10 +75,15 @@ vim-plug
 
 vim +PlugInstall +qall
 
-sudo systemctl enable dhcpcd.service
+sudo systemctl enable --now dhcpcd.service
 
-sudo systemctl enable ntpd
-sudo systemctl start ntpd
+sudo systemctl enable --now ntpd
+
+#iptable
+
+sudo cp ${dir}/iptable/ip* /etc/iptables/
+sudo systemctl enable --now iptables.service
+sudo systemctl enable --now ip6tables.service
 
 sudo systemctl enable tlp.service
 sudo systemctl enable tlp-sleep.service
@@ -86,13 +91,13 @@ sudo systemctl mask systemd-rfkill.service
 sudo systemctl mask systemd-rfkill.socket
 
 sudo cp ${dir}/i3/lock.service /etc/systemd/system/
-sudo systemctl enable lock.service
+sudo systemctl enable --now lock.service
 
 sudo cp ${dir}/wifi/wpa_supplicant.service /etc/systemd/system/
-sudo systemctl enable wpa_supplicant.service
+sudo systemctl enable --now wpa_supplicant.service
 
 sudo sed -i 's/dockerd -H/dockerd --data-root=\/home\/.docker -H/g' /usr/lib/systemd/system/docker.service
-sudo systemctl enable docker
+sudo systemctl enable --now docker
 
 sudo usermod -a -G wheel,docker,vboxusers ${username}
 
