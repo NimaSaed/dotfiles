@@ -130,9 +130,11 @@ function format()
     cryptsetup luksFormat --type luks2 /dev/${lvm}
     cryptsetup open /dev/${lvm} cryptlvm
     pvcreate -ff /dev/mapper/cryptlvm
-    vgcreate vol0 /dev/mapper/cryptlvm
-    lvcreate -L ${root_drive_size}G vol0 -n root
-    lvcreate -l 100%FREE vol0 -n home
+    vgcreate ${vol_name} /dev/mapper/cryptlvm
+    lvcreate -L ${root_drive_size}G ${vol_name} -n root
+    lvcreate -l 100%FREE ${vol_name} -n home
+    cryptsetup close ${home_drive}
+    cryptsetup close ${root_drive}
     cryptsetup close cryptlvm
     echo "Done"
 }
