@@ -133,6 +133,7 @@ function format()
     vgcreate ${vol_name} /dev/mapper/cryptlvm
     lvcreate -L ${root_drive_size}G ${vol_name} -n root
     lvcreate -l 100%FREE ${vol_name} -n home
+    mkfs.ext4 /dev/mapper/${home_drive}
     cryptsetup close ${home_drive}
     cryptsetup close ${root_drive}
     cryptsetup close cryptlvm
