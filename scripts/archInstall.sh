@@ -1,22 +1,27 @@
 #!/usr/bin/env bash
 
 drive=nvme0n1
-lvm=${drive}p3
+lvm=${drive}p2
 vol_name=vol0
 root_drive=vol0-root
 home_drive=vol0-home
 boot_drive=${drive}p1
-pacman_mirror='Server = http://mirrors.cat.net/archlinux/$repo/os/$arch'
+pacman_mirror='Server = https://mirrors.xtom.nl/archlinux/$repo/os/$arch'
 
-## Japan
-#Server = http://mirrors.cat.net/archlinux/$repo/os/$arch
-#Server = https://mirrors.cat.net/archlinux/$repo/os/$arch
-#Server = http://ftp.tsukuba.wide.ad.jp/Linux/archlinux/$repo/os/$arch
-#Server = http://ftp.jaist.ac.jp/pub/Linux/ArchLinux/$repo/os/$arch
-#Server = https://ftp.jaist.ac.jp/pub/Linux/ArchLinux/$repo/os/$arch
-#Server = https://jpn.mirror.pkgbuild.com/$repo/os/$arch
+# Netherlands
+# https://mirror.i3d.net/pub/archlinux/$repo/os/$arch ... 0.123025
+# https://mirror.koddos.net/archlinux/$repo/os/$arch ... 0.157417
+# https://archmirror.lavatech.top/$repo/os/$arch ... 0.203131
+# https://mirror.ams1.nl.leaseweb.net/archlinux/$repo/os/$arch ... 0.117575
+# https://archlinux.mirror.liteserver.nl/$repo/os/$arch ... 0.244184
+# https://mirror.mijn.host/archlinux/$repo/os/$arch ... 0.085943
+# https://mirror.neostrada.nl/archlinux/$repo/os/$arch ... 0.160634
+# https://archlinux.mirror.pcextreme.nl/$repo/os/$arch ... 0.108563
+# https://archlinux.mirror.wearetriple.com/$repo/os/$arch ... 0.098275
+# https://mirror-archlinux.webruimtehosting.nl/$repo/os/$arch ... 0.168727
+# https://mirrors.xtom.nl/archlinux/$repo/os/$arch ... 0.079797
 
-my_zone=Asia/Kuala_Lumpur
+my_zone=Europe/Amsterdam
 my_hostname=Archer
 my_user=nima
 
@@ -113,7 +118,21 @@ function install_os()
 
 function format()
 {
-    echo "format"
+    echo "Format the drive"
+    wipefs -a /dev/${drive}
+    parted -s /dev/${drive} mklabel gpt \
+        mkpart primary fat32 1MiB 261MiB \
+        set 1 esp on \
+        mkpart primary 261MiB 100% \
+        set 2 lvm on
+
+    cryptsetup luksFormat --type luks2 /dev/${lvm}
+    cryptsetup open /dev/${lvm} cryptlvm
+    pvcreate /dev/mapper/cryptlvm
+    gvcreate vol0 /dev/mapper/cryptlvm
+    lvcreate -L sizeG vol0 -n root
+    cryptsetup close cryptlvm
+    echo "Done"
 }
 
 case "$@" in
