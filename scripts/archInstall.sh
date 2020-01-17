@@ -4,6 +4,7 @@ drive=nvme0n1
 lvm=${drive}p2
 vol_name=vol0
 root_drive=vol0-root
+root_drive_size=120 # Gigabyte
 home_drive=vol0-home
 boot_drive=${drive}p1
 pacman_mirror='Server = https://mirrors.xtom.nl/archlinux/$repo/os/$arch'
@@ -130,7 +131,7 @@ function format()
     cryptsetup open /dev/${lvm} cryptlvm
     pvcreate /dev/mapper/cryptlvm
     vgcreate vol0 /dev/mapper/cryptlvm
-    lvcreate -L sizeG vol0 -n root
+    lvcreate -L ${root_drive_size}G vol0 -n root
     cryptsetup close cryptlvm
     echo "Done"
 }
