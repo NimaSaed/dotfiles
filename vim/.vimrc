@@ -3,10 +3,12 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
 
+Plug 'plasticboy/vim-markdown'
+Plug 'chriskempson/base16-vim'
 Plug 'wellle/targets.vim'
-Plug 'iamcco/markdown-preview.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'tyru/open-browser.vim'
+Plug 'PProvost/vim-ps1'
 
 call plug#end()
 
@@ -90,6 +92,13 @@ set splitbelow splitright
 " Disables automatic commenting on newline:
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 
+" Bacon ipsum
+
+function Ipsum()
+    execute 'read' . '!curl -s "https://baconipsum.com/api/?start-with-lorem=1&type=all-meat&format=text&paras='.v:count1.'"'
+endfunction
+map ipsum :<C-U>call Ipsum()<CR>o
+
 " }}}
 
 " Spelling {{{
@@ -161,9 +170,9 @@ map <Leader>h :call ToggleHighlighColor()<CR>
 " }}}
 
 " Markdown preview {{{
-let g:mkdp_path_to_chrome = 'firefox --profile ~/.mozilla/firefox/5d4xorxm.frameless/'
-map <leader>v :MarkdownPreview<CR>
-map <leader>b :MarkdownPreviewStop<CR>
+
+map <leader>v : ! ~/.scripts/md_convert.sh '%'<bar> xargs -I {} bash -c "firefox '{}'; sleep 0.5; rm '{}'"<CR><CR>
+map <leader>p : ! ~/.scripts/makeslides '%'<CR><CR>
 
 " }}}
 
@@ -201,6 +210,13 @@ autocmd Filetype markdown inoremap ,at !!!<space>info "Attendees:"
 autocmd Filetype markdown inoremap ,an !!!<space>note "Note:"
 autocmd Filetype markdown inoremap ,ac !!!<space>example "Action Items:"
 
+autocmd Filetype markdown inoremap ,sh ---<Enter>title: Title<++><Enter>subtitle: Subtitle<++><Enter>author: Author<++><enter>date: Date<++><Enter>theme: Boadilla<Enter>classoption: aspectratio=169<Enter>---<++><Esc>7k
+
+autocmd Filetype markdown inoremap ,wh # Things to get done on week <ESC>:read !date '+\%V'<CR>I<backspace><ESC>o
+autocmd Filetype markdown inoremap ,d <ESC>:read ! date '+\%A \%d \%B \%y'<CR>I<backspace><ESC>o
+
+autocmd Filetype markdown inoremap ,gwr # Security Team Report Week <ESC>:read !date '+\%V'<CR>I<backspace><ESC>A, <ESC>:read !date '+\%Y'<CR>I<backspace><ESC>o<CR><CR>## Actions taken this week<CR><CR><++><CR><CR>## Actions planned for next week<CR><CR><++><CR><CR>## Progress of implementation of framework<CR><CR><++><CR><CR>## Security issues (high/medium) found this week<CR><CR><++><CR><CR>## Overview of actions + owners<CR><CR><++><ESC>18k^
+
 " Mark task as done
 map <leader>d ci[x<Esc>0
 " Mark task as special
@@ -235,13 +251,13 @@ function! s:goyo_enter()
 endfunction
 
 function! s:goyo_leave()
+    call HighlighColor()
     augroup numbertoggle
       set number relativenumber
       autocmd!
       autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
       autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
     augroup END
-    call HighlighColor()
 endfunction
 
 autocmd! User GoyoEnter nested call <SID>goyo_enter()
