@@ -1,15 +1,19 @@
-#!/bin/env bash
+#!/usr/bin/env bash
+set -o nounset # Treat unset variables as an error
 
-arg=$1
+#arg=${1:-""}
+#
+#if [ "$arg" == "" ]; then
+#    vim  "$HOME/Dropbox/Notes/.old_Notes/Inbox/$(date "+%Y-Week-%V-todo.md")";
+#elif [ "$arg" == "-w" ]; then
+#    filename=$(date --date="next monday - $(( 1 + $2 )) week" "+%Y-Week-%V-todo.md")
+#    if [ "$2" = "" ]; then
+#        filename=$(date "+%Y-Week-%V-todo.md")
+#    fi
+#    vim  "$HOME/Dropbox/Notes/.old_Notes/Inbox/$filename";
+#else
+#    echo "error"
+#fi
 
-if [ "$arg" == "" ]; then
-    vim  "/home/nima/Dropbox/Notes/Inbox/$(date '+%Y-%m-%d-todo.md')";
-elif [ "$arg" == "-d" ]; then
-    filename=$(date --date="today-$2 days" "+%Y-%m-%d-todo.md")
-    if [ "$2" = "" ]; then
-        filename=$(date --date="today-0 days" "+%Y-%m-%d-todo.md")
-    fi
-    vim  "/home/nima/Dropbox/Notes/Inbox/$filename";
-else
-    echo "error"
-fi
+
+vim "$HOME/Dropbox/Notes/todo.md"

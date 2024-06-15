@@ -1,10 +1,39 @@
 set -o vi
-#export TERM="screen-256color"
-export TERMINAL="st"
-export TERMCMD="st"
+bind -m vi-command 'Control-l: clear-screen'
+bind -m vi-insert 'Control-l: clear-screen'
 
-PS1='\[\e[0;49;39m\] >_ \[\e[0;49;36m\](\[\e[0;49;96m\]\W\[\e[0;49;36m\])\[\e[0;49;39m\] '
-eval $(dircolors -b ~/.dircolors/dircolors)
+if [ "$(uname)" = "Darwin" ];
+then
+    eval $(gdircolors -b ~/.dircolors/dircolors)
+else
+    export TERM="screen-256color"
+    export TERMINAL="st"
+    export TERMCMD="st"
+    export RUBYOPT="-W0"
+    export BROWSER="firefox"
+    eval $(dircolors -b ~/.dircolors/dircolors)
+fi
+
+function git_branch() {
+    if [ ! -z "$(git branch 2>/dev/null | grep ^*)" ];
+    then
+        echo "($(git branch 2>/dev/null | grep ^* | colrm 1 2))";
+    fi
+}
+
+function get_aws_profile {
+    if [ ! -z "$AWS_PROFILE" ];
+    then
+        echo "(${AWS_PROFILE}[${AWS_REGION}])";
+    fi
+}
+
+PS1="\[\e[1;49;39m\]>_ "
+PS1+="\[\e[0;49;36m\](\[\e[0;49;96m\]\W\[\e[0;49;36m\])"
+PS1+="\[\e[0;49;33m\]\$(git_branch)"
+PS1+="\[\e[7;49;93m\]\$(get_aws_profile)"
+PS1+="\[\e[0;49;39m\] "
+
 # History Setting
 HISTSIZE=10000000
 HISTCONTROL=ignoreboth
@@ -13,7 +42,13 @@ HISTTIMEFORMAT="%d/%m/%y %T "
 stty stop undef
 
 # List directory contents
-alias ls='ls --color=auto'
+if [ "$(uname)" = "Darwin" ];
+then
+    alias ls='gls --color=auto'
+else
+    alias ls='ls --color=auto'
+fi
+
 alias sl=ls
 alias la='ls -AF'       # Compact view, show hidden
 alias ll='ls -hl'
@@ -53,6 +88,17 @@ alias egrep="egrep --color=auto"
 alias xclip='xclip -selection c'
 
 alias p="python"
+alias ruby="ruby"
+# alias msfconsole="msfconsole -q"
+msf_path="${HOME}/Dropbox/Projects/dockers/msf/docker-compose.yml"
+alias msf="docker-compose -f ${msf_path} up --detach"
+alias msf2="docker-compose -f ${msf_path} up --scale msf=2 --detach"
+alias msf3="docker-compose -f ${msf_path} up --scale msf=3 --detach"
+alias msfcon="docker attach msf-msf-1"
+alias msfcon2="docker attach msf-msf-2"
+alias msfcon3="docker attach msf-msf-3"
+alias msfstop="docker-compose -f ${msf_path} stop"
+alias msfdown="docker-compose -f ${msf_path} down"
 
 # cat with line number
 alias ccat='cat -n'
@@ -92,8 +138,14 @@ wttr()
     curl -SH "Accept-Language: ${LANG%_*}" --compressed "$request"
 }
 
+alias docker=podman
+
 alias arch="docker run --rm -it archlinux/base"
 alias barch="docker run --rm -it blackarch bash"
+
+function sslscan(){
+    docker run --rm -e URL=${1:-localhost} -e PORT=${2:-443} nimasaed/sslscan;
+}
 
 # I learn these from https://blog.ropnop.com/docker-for-pentesters/
 alias dockerbash="docker run --rm -it --entrypoint=/bin/bash"
@@ -107,25 +159,25 @@ function dockershellhere() {
     dirname=${PWD##*/}
     docker run --rm -it --entrypoint=/bin/sh -v `pwd`:/${dirname} -w /${dirname} "$@"
 }
+function dockerpwshhere() {
+    dirname=${PWD##*/}
+    docker run --rm -it -v `pwd`:/${dirname} -w /${dirname} mcr.microsoft.com/powershell
+}
+function webgoat(){
+    docker run --rm -p 8080:8080 -p 9090:9090 -e TZ=Europe/Amsterdam --name webgoat webgoat/goatandwolf
+}
+
 
 alias nginxservehere='docker run --rm -it -p 80:80 -p 443:443 -v "$(pwd):/srv/data" nimasaed/nginxserve'
 
-function msf-docker() {
-    if [ -z "$(docker network ls | grep -w msf)" ];
-    then
-        docker network create --subnet=172.18.0.0/16 msf
-    fi
-    if [ -z "$(docker ps -a | grep -w postgres)" ];
-    then
-        docker run --ip 172.18.0.2 --network msf --rm --name postgres -v "${HOME}/.msf4/database:/var/lib/postgresql/data" -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_DB=msf -d postgres:11-alpine
-    fi
-    #docker pull metasploitframework/metasploit-framework:latest
-    #docker run --rm -it -u 0 --network msf --name msf --ip 172.18.0.3 -e DATABASE_URL='postgres://postgres:postgres@172.18.0.2:5432/msf' -v "${HOME}/.msf4:/home/msf/.msf4" -p 8443-8500:8443-8500 metasploitframework/metasploit-framework
-    docker run --rm -it -u 0 --network msf --name msf --ip 172.18.0.3 -v "${HOME}/.msf4:/home/msf/.msf4" -p 8443-8500:8443-8500 metasploitframework/metasploit-framework
- }
+#function trufflehog() {
+    #docker run --rm -it trufflesecurity/trufflehog:latest git ${1}
+#}
 
 function public_ip() {
-    echo "Public IP: $(curl -s ifconfig.co)"
+    #echo "Public IP: $(curl -s ifconfig.co)"
+    public_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
+    echo -n $public_ip
 }
 
 function news() {
@@ -150,4 +202,168 @@ function list_users() {
     do
         printf "%-30s %s\n" "$login" "$name";
     done < /etc/passwd
+}
+
+# AWS
+function aws_profile() {
+
+    local aws_home="$HOME/.aws"
+
+    local profiles=(`\
+        cat ${aws_home}/config | \
+        grep "\[profile" | \
+        sed 's/\[//g;s/\]//g' | \
+        cut -d " " -f 2`);
+
+    PS3="Select a profile: [none = 0] "
+
+    select profile in ${profiles[@]}
+    do
+        selected=$profile;
+        break;
+    done
+
+    unset $PS3;
+    if [ ! -z ${profile} ];
+    then
+        export AWS_PROFILE="${profile}";
+        export AWS_REGION=$(cat ${aws_home}/config | sed -n "/${profile}/,/\[/p" | grep region | cut -d '=' -f 2 | sed 's/ //g')
+        export AWS_DEFAULT_REGION=$(cat ${aws_home}/config | sed -n "/${profile}/,/\[/p" | grep region | cut -d '=' -f 2 | sed 's/ //g')
+        export AWS_ACCESS_KEY_ID=$(cat ${aws_home}/credentials | sed -n "/${profile}/,/\[/p" | grep aws_access_key_id | cut -d '=' -f 2 | sed 's/ //g')
+        export AWS_SECRET_ACCESS_KEY=$(cat ${aws_home}/credentials | sed -n "/${profile}/,/\[/p" | grep aws_secret_access_key | cut -d '=' -f 2 | sed 's/ //g')
+    else
+        export AWS_PROFILE=""
+        export AWS_REGION=""
+        export AWS_ACCESS_KEY_ID=""
+        export AWS_SECRET_ACCESS_KEY=""
+        export AWS_SESSION_TOKEN=""
+        export AWS_ROLE_ARN=""
+    fi
+}
+
+function aws_mfa () {
+
+    aws_profile
+
+    read -s -p "AWS MFA: " MFA
+
+    aws_user=$(aws iam get-user | jq .User.UserName -r)
+    mfa_arn=$(aws iam list-mfa-devices --user-name $aws_user | jq .MFADevices[0].SerialNumber -r)
+    json=$(aws sts get-session-token --serial-number $mfa_arn --token-code $MFA)
+
+    export AWS_SECRET_ACCESS_KEY=$( echo $json | jq -r .Credentials.SecretAccessKey)
+    export AWS_SESSION_TOKEN=$( echo $json | jq -r .Credentials.SessionToken)
+    export AWS_ACCESS_KEY_ID=$( echo $json | jq -r .Credentials.AccessKeyId)
+
+    aws_admin_role=$(aws iam list-roles | jq -r '.Roles[] | select(.RoleName=="admin") | .Arn')
+
+    json=$(aws sts assume-role --role-arn $aws_admin_role --role-session-name admin)
+
+    export AWS_SECRET_ACCESS_KEY=$( echo $json | jq -r .Credentials.SecretAccessKey)
+    export AWS_SESSION_TOKEN=$( echo $json | jq -r .Credentials.SessionToken)
+    export AWS_ACCESS_KEY_ID=$( echo $json | jq -r .Credentials.AccessKeyId)
+    export AWS_ROLE_ARN=$aws_admin_role
+
+}
+
+function aws_region(){
+
+    aws_regions=($(aws ec2 describe-regions --all-regions --query "Regions[].{Name:RegionName}" --output text));
+
+    PS3="Select a region: [none = 0] "
+
+    select region in ${aws_regions[@]}
+    do
+        selected=$region;
+        break;
+    done
+
+    unset $PS3;
+    if [ ! -z ${region} ];
+    then
+        export AWS_REGION="$selected";
+    else
+        aws_profile
+    fi
+}
+
+function SetProxy(){
+
+    location=${2:-"localhost:8080"}
+    if [ "${1:-set}" = "set" ];
+    then
+        echo "Setting http and https proxy to $location"
+        export HTTP_PROXY=http://${location}
+        export HTTPS_PROXY=http://${location}
+        export all_proxy=http://${location}
+    elif [ "${1:-set}" = "unset" ];
+    then
+        echo "Unsetting http and https proxy"
+        unset -v HTTP_PROXY
+        unset -v HTTPS_PROXY
+        unset -v all_proxy
+    fi
+}
+
+
+function vmssh(){
+
+    # get all vm on parallels and make an array
+    all_vm=($(prlctl list -a | sed -E 's|([a-zA-Z0-9]) ([a-zA-Z0-9])|\1_\2|g' | sed 1d | awk '{print $1,$2,$4}' | sed 's/ /,/g' | sed 's/[{}]//g'))
+
+    PS3="Select a VM: [none = 0] "
+
+    select vm in ${all_vm[@]}
+    do
+        selected=$vm;
+        break;
+    done
+
+    unset $PS3;
+
+    if [ ! -z ${vm} ];
+    then
+        # get vm details from selected vm
+        vm_info=($(echo $vm | sed 's/,/ /g'))
+        vm_uuid=${vm_info[0]}
+        vm_status=${vm_info[1]}
+        vm_name=${vm_info[2]}
+
+        # Start the vm if it is paused, stopped or suspended
+        if [ $vm_status = "paused" ] \
+            || [ $vm_status = "stopped" ] \
+            || [ $vm_status = "suspended" ];
+                then
+                    prlctl start $vm_uuid
+        fi
+
+        # wait for the vm to be available
+        while [ $vm_status != "running" ]
+        do
+            echo $vm_info $vm_uuid $vm_status $vm_name
+            vm_status="$(prlctl status $vm_uuid | cut -d " " -f 4)"
+        done
+
+        # start ssh service on vm
+        prlctl exec $vm_uuid systemctl start ssh
+
+        # creat authorized key in vm for ssh
+        sshkey=$(cat ~/.ssh/id_ed25519.pub)
+        prlctl exec $vm_uuid "if [ -d \"/home/parallels/.ssh\" ]; then echo \"$sshkey\" > /home/parallels/.ssh/authorized_keys; else mkdir /home/parallels/.ssh; echo \"$sshkey\" > /home/parallels/.ssh/authorized_keys; fi; chown parallels:parallels -R /home/parallels/.ssh"
+
+        # get vm ip address
+        #vm_ip=$(prlctl exec $vm_uuid \
+        #        ip addr show eth0 | \
+        #        grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}' | \
+        #        grep -v 255)
+        vm_ip=$(prlctl list -f $vm_uuid | \
+                grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}')
+
+        if [ ! -z $vm_ip ];
+        then
+            ssh parallels@${vm_ip}
+        else
+            echo "no IP is available"
+        fi
+    fi
 }

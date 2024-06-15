@@ -2,3 +2,11 @@
 	helper = store
 [user]
 	name = Nima Saed
+	email = nima@nmsd.xyz
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILusNnhBC/pBjhZpx312e7TEzwS69SyN/0e/osA6Jez9
+[commit]
+	gpgsign = true
+[gpg]
+	format = ssh
+[gpg "ssh"]
+	program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign

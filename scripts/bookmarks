@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
+set -o nounset # Treat unset variables as an error
 
-bookmarkFile=${HOME}/Dropbox/Notes/Personal/bookmarks.json
-BROWSER=firefox
+bookmarkDir=${HOME}/Dropbox/Notes/.old_Notes/Personal/
+bookmarkFile=${bookmarkDir}$(ls -t ${bookmarkDir} | grep -P 'bookmarks(.)*json' -m1)
+BROWSER=${BROWSER:-"firefox"}
 
 xnb=$(xrdb -query | grep -w background | cut -f2)
 xnf=$(xrdb -query | grep -w foreground | cut -f2)

@@ -1,14 +1,25 @@
 #!/usr/bin/env bash
 tmux a -t Main || \
 tmux new -s Main\; \
-    send-keys 'todo' c-m \; \
-    split-window -h -p 30\; \
-    clock-mode \; \
-    split-window -v -p 75\; \
-    send-keys 'python' c-m c-l\; \
-    select-pane -t 0 \; \
-    rename-window 'to-do' \; \
+    rename-window 'ToDo' \; \
+    send-keys c-m \; \
+    send-keys 'vim ~/Dropbox/Notes/todo.md' c-m \; \
     new-window \; \
-    rename-window 'Bash' \; \
-    select-window -t 1 \;
+    rename-window 'VPN' \; \
+    send-keys 'sudo openfortivpn' c-m \; \
+    move-window -t 0 \; \
+    new-window \; \
+    rename-window 'SSH' \; \
+    select-window -t 1 \; \
+    select-pane -t 1 \; \
+    send-keys 'gg' \; \
 
+
+# Split Windows horizontally or vertically
+# split-window -h/-v -p PIXEL
+
+# Rename Window
+# rename-window "new name"
+
+# Select Window
+# select-window -t window_number

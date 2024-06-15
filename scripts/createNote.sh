@@ -1,5 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
+set -o nounset # Treat unset variables as an error
 
-vim +Goyo +start "/home/nima/Dropbox/Notes/Inbox/$(date '+%Y-%m-%d %H.%M.%S.md')"
-
-
+vim "$HOME/Dropbox/Notes/$(date '+%Y-%m-%d %H.%M.%S.md')"

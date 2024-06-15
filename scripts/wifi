@@ -17,7 +17,8 @@
 #------------------------------------------------------------------------
 
 INTERFACE="${BLOCK_INSTANCE:-wlan0}"
-INTERFACE="wlp58s0"
+INTERFACE="$(ip link  | sort -r | grep -Po 'wl[\w\d]{1,}' -m1)"
+
 #------------------------------------------------------------------------
 
 # As per #36 -- It is transparent: e.g. if the machine has no battery or wireless

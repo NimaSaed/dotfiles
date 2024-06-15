@@ -1,0 +1,2 @@
+# to change power control of figer print reader
+ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTRS{idVendor}=="27c6", ATTRS{idProduct}=="5385", ATTR{power/control}="auto", ATTR{driver/1-10/power/control}="auto"

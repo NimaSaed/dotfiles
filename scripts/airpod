@@ -1,9 +1,30 @@
 #!/usr/bin/env bash
 set -o nounset # Treat unset variables as an error
 
+action=${1:-con}
 airpod=$(bluetoothctl devices | grep AirPods | awk '{print $2}')
-bluetoothctl power on
-sleep 0.5
-bluetoothctl connect $airpod
 
+if [ "${action}" = "con" ];
+then
+    bluetoothctl power on
+    sleep 0.5
+    bluetoothctl connect $airpod
+elif [ "${action}" = "discon" ];
+then
+    bluetoothctl disconnect $airpod
+    killall phonesim
+elif [ "${action}" = "hsp" ];
+then
+    phonesim -p 12345 /usr/share/phonesim/default.xml &
+    sleep 0.5
+    dbus-send --print-reply --system --dest=org.ofono /phonesim org.ofono.Modem.SetProperty string:"Powered" variant:boolean:true
+    dbus-send --print-reply --system --dest=org.ofono /phonesim org.ofono.Modem.SetProperty string:"Online" variant:boolean:true
+    pulseaudio --kill
+    bluetoothctl power on
+    sleep 1
+    bluetoothctl connect $airpod
+else
+    echo "to connect pass \"con\""
+    echo "to disconnect pass \"discon\""
+fi
 exit 0

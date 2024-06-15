@@ -1,4 +1,14 @@
-Xft.dpi:        120
+Xft.dpi: 192
+
+! These might also be useful depending on your monitor and personal preference:
+Xft.autohint: 0
+Xft.lcdfilter:  lcddefault
+Xft.hintstyle:  hintfull
+Xft.hinting: 1
+Xft.antialias: 1
+Xft.rgba: rgb
+
+st.font: hack-11;
 
 ! theme light
 #define base00 #fdf6e3
@@ -57,3 +67,11 @@ Xft.dpi:        120
 ! black
 *.color7:       base07
 *.color15:      base0F
+
+
+!dwm.normbordercolor: base08
+dwm.normbgcolor: base0H
+dwm.normfgcolor: base0G
+!dwm.selbordercolor: base0F
+dwm.selbgcolor: base08
+dwm.selfgcolor: base0H

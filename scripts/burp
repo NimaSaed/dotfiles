@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -o nounset # Treat unset variables as an error
+
+path="$HOME/Dropbox/burpsuite"
+
+# Get latest version
+version=$(ls $path -lt | grep -oP 'burpsuite_pro(.)*' -m 1)
+
+jarfile="${path}/$version"
+
+export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dsun.java2d.uiScale=2.0'
+nohup java --illegal-access=permit -jar $jarfile &> /dev/null &

@@ -1,20 +1,32 @@
 #!/usr/bin/env bash
 
+mode="--auto"
+scale_value="1.50x1.50"
 mainScreen=$(xrandr | grep -w primary | awk '{print $1}')
-SecondScreenIsConnected=$(xrandr | grep -w connected | grep -v primary | awk {'print $1'})
-SecondScreenIsextended=$(xrandr | grep -w connected | grep -v primary | awk {'print $14'})
+SecondScreen=$(xrandr | grep -w connected | grep -v primary | awk {'print $1'})
 
-if [ "$1" == "off" ] && [ "${SecondScreenIsConnected}" ]; then
-    xrandr --output ${SecondScreenIsConnected} --off --output ${mainScreen} --auto
+# main screen only, if the external monitor is connected
+if [ "$1" == "off" ] && [ "${SecondScreen}" ]; then
+    xrandr --output ${SecondScreen} --off --output ${mainScreen} ${mode} --scale ${scale_value}
+# main screen only, if there are no external monitor connected
 elif [ "$1" == "off" ]; then
-    xrandr --output ${mainScreen} --auto
-    xrandr -o 0
-elif [ "$1" == "m" ] && [ "${SecondScreenIsConnected}" ]; then
-    xrandr --output ${mainScreen} --auto --output ${SecondScreenIsConnected} --auto --same-as ${mainScreen}
-elif [ "$1" == "e" ] && [ "${SecondScreenIsConnected}" ] ; then
-    xrandr --output  ${mainScreen} --auto --output ${SecondScreenIsConnected} --auto --above ${mainScreen}
-elif [ "$1" == "s" ] && [ "${SecondScreenIsConnected}" ] ; then
-    xrandr --output ${mainScreen} --off --output ${SecondScreenIsConnected} --auto
-else 
+    xrandr --output ${mainScreen} ${mode} --scale ${scale_value}
+# Mirror
+elif [ "$1" == "m" ] && [ "${SecondScreen}" ]; then
+    xrandr --output ${SecondScreen} ${mode}\
+           --output ${mainScreen} ${mode} --same-as ${SecondScreen}\
+           --scale `echo "3840/1920" | bc -l`x`echo "2160/1080" | bc -l`
+# Extended
+elif [ "$1" == "e" ] && [ "${SecondScreen}" ] ; then
+    xrandr --output ${SecondScreen} ${mode}\
+           --output  ${mainScreen} ${mode} --below ${SecondScreen}\
+           --scale ${scale_value}
+# External monitor only
+elif [ "$1" == "s" ] && [ "${SecondScreen}" ] ; then
+    xrandr --output ${mainScreen} --off --output ${SecondScreen} ${mode}
+else
     echo "No second screen is connected"
 fi
+
+i3 restart
+bing-background

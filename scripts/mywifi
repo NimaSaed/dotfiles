@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-wireless=$(ip link  | grep -Po 'w[\w\d]{1,}')
+wireless1="wlp2s0"
+#wireless2=$(ip link | grep -Po "wlp0s[a-z0-9]{1,}")
 
-#sudo systemctl start wpa_supplicant.service
-wpa_supplicant -D nl80211 -i $wireless -c /home/nima/Dropbox/Arch\ Linux/wpa_supplicant.conf
+conf_path='/home/nima/Dropbox/Arch Linux/wifi-configs/'
+
+wpa_config="wpa_supplicant.conf"
+
+wpa_supplicant -D nl80211 -i $wireless1 -c "${conf_path}${wpa_config}"

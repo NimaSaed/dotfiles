@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-path1="${HOME}/Dropbox/screenshots/$(date +%Y-%m-%d-%H-%M-%S).png"
-path2="${HOME}/Dropbox/Notes/img/$(date +%Y-%m-%d-%H-%M-%S).png"
+path1="${HOME}/Dropbox/Notes/.resources/$(date +%Y-%m-%d-%H-%M-%S).png"
+#path2="${HOME}/Dropbox/Notes/img/$(date +%Y-%m-%d-%H-%M-%S).png"
 
 case $1 in
     note)
@@ -14,4 +14,5 @@ esac
 
 scrot -s $path
 echo $path | xclip -selection c
+ksnip -e $path
 

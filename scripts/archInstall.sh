@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+dir=$(dirname $(dirname $(readlink -f "$0")))
+
 drive=nvme0n1
 lvm=${drive}p2
 vol_name=vol0
@@ -7,20 +9,8 @@ root_drive=vol0-root
 root_drive_size=120 # Gigabyte
 home_drive=vol0-home
 boot_drive=${drive}p1
-pacman_mirror='Server = https://mirrors.xtom.nl/archlinux/$repo/os/$arch'
+pacman_country="DE" # Germany
 
-# Netherlands
-# https://mirror.i3d.net/pub/archlinux/$repo/os/$arch ... 0.123025
-# https://mirror.koddos.net/archlinux/$repo/os/$arch ... 0.157417
-# https://archmirror.lavatech.top/$repo/os/$arch ... 0.203131
-# https://mirror.ams1.nl.leaseweb.net/archlinux/$repo/os/$arch ... 0.117575
-# https://archlinux.mirror.liteserver.nl/$repo/os/$arch ... 0.244184
-# https://mirror.mijn.host/archlinux/$repo/os/$arch ... 0.085943
-# https://mirror.neostrada.nl/archlinux/$repo/os/$arch ... 0.160634
-# https://archlinux.mirror.pcextreme.nl/$repo/os/$arch ... 0.108563
-# https://archlinux.mirror.wearetriple.com/$repo/os/$arch ... 0.098275
-# https://mirror-archlinux.webruimtehosting.nl/$repo/os/$arch ... 0.168727
-# https://mirrors.xtom.nl/archlinux/$repo/os/$arch ... 0.079797
 
 my_zone=Europe/Amsterdam
 my_hostname=Archer
@@ -28,6 +18,18 @@ my_user=nima
 
 function install_os()
 {
+    rankmirrors &> /dev/null
+    if [ "$?" == "127" ];
+    then
+        echo "installing rankmirrors"
+	    pacman -Sy
+	    pacman -S pacman-contrib --noconfirm
+    fi
+
+    echo "running rankmirrors"
+    curl -s "https://archlinux.org/mirrorlist/?country=${pacman_country}&protocol=https&ip_version=4" | cut -c2- > mirrors
+    rankmirrors -n ${4:-1} -v mirrors | tee > /etc/pacman.d/mirrorlist
+
     echo "installing OS"
 
     echo "Formatting boot partition"
@@ -55,8 +57,8 @@ function install_os()
     sleep 1
 
     echo "Installing Arch Linux on root"
-    echo ${pacman_mirror} > /etc/pacman.d/mirrorlist
-    pacstrap /mnt base base-devel linux linux-firmware mkinitcpio dhcpcd wpa_supplicant lvm2 || exit 1
+    package_list=$(cat ${dir}/scripts/packages | grep ^[^#])
+    pacstrap /mnt base base-devel linux linux-firmware mkinitcpio dhcpcd wpa_supplicant lvm2 $package_list || exit 1
     sleep 1
     genfstab -U /mnt > /mnt/etc/fstab
     sleep 1
@@ -97,7 +99,7 @@ function install_os()
     echo "Set root password"
     arch-chroot /mnt passwd
     echo "Creating your username"
-    arch-chroot /mnt useradd -G wheel ${my_user}
+    arch-chroot /mnt useradd -G wheel -m ${my_user}
     sleep 1
     echo "Set password for your username"
     arch-chroot /mnt passwd ${my_user}

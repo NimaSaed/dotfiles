@@ -3,12 +3,17 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
 
-Plug 'plasticboy/vim-markdown'
+Plug 'godlygeek/tabular'
+Plug 'preservim/vim-markdown'
+"Plug 'plasticboy/vim-markdown'
+Plug 'davidhalter/jedi-vim'
+Plug 'hashivim/vim-terraform'
 Plug 'chriskempson/base16-vim'
 Plug 'wellle/targets.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'tyru/open-browser.vim'
 Plug 'PProvost/vim-ps1'
+Plug 'elzr/vim-json'
 
 call plug#end()
 
@@ -27,7 +32,9 @@ set wildmenu
 "Set wildignore+=
 
 "Set clipboard to be shared with middle click
-set clipboard=unnamedplus
+"set clipboard=unnamedplus
+set clipboard=unnamed
+
 
 "set laststatus=2
 set encoding=utf-8
@@ -54,7 +61,7 @@ set incsearch
 " enable search highlight
 set hlsearch
 
-" set tabs to have 4 spaces
+" set tabs to have 8 spaces
 set ts=4
 set tabstop=4
 
@@ -99,6 +106,12 @@ function Ipsum()
 endfunction
 map ipsum :<C-U>call Ipsum()<CR>o
 
+" to auto save files on any changes
+" autocmd TextChanged,TextChangedI <buffer> if &readonly == 0 && filereadable(bufname('%')) | silent write | endif
+
+" check one time after 4s of inactivity in normal mode
+" set autoread | au CursorHold * checktime | call feedkeys("lh")
+
 " }}}
 
 " Spelling {{{
@@ -129,9 +142,10 @@ function! HighlighColor()
     " enable syntax highlighting
     syntax enable
     colorscheme base16-solarized-light
+    highlight Normal guibg=NONE ctermbg=NONE
 
     " Numbers color
-    highlight LineNr ctermfg=7 ctermbg=0
+    highlight LineNr ctermfg=NONE ctermbg=NONE
     highlight CursorLineNr ctermfg=9 ctermbg=0
 
     " Menu color (auto complete)
@@ -153,6 +167,7 @@ function! HighlighColor()
     highlight SpellCap term=reverse cterm=undercurl ctermbg=81 gui=undercurl guisp=#268bd2
     highlight SpellLocal term=underline cterm=undercurl ctermbg=14 gui=undercurl guisp=#2aa198
     highlight SpellRare  term=reverse cterm=undercurl ctermbg=225 gui=undercurl guisp=#6c71c4
+
 endfunction
 
 " turn on/off syntax color
@@ -171,8 +186,8 @@ map <Leader>h :call ToggleHighlighColor()<CR>
 
 " Markdown preview {{{
 
-map <leader>v : ! ~/.scripts/md_convert.sh '%'<bar> xargs -I {} bash -c "firefox '{}'; sleep 0.5; rm '{}'"<CR><CR>
-map <leader>p : ! ~/.scripts/makeslides '%'<CR><CR>
+map <leader>v : ! ~/.scripts/md_convert.sh '%'<bar> xargs -I {} bash -c "open '{}'; sleep 1; rm '{}'"<CR><CR>
+map <leader>p : ! ~/.scripts/makeslides '%'<bar> xargs -I {} bash -c "open '{}'; sleep 1; rm '{}'"<CR><CR>
 
 " }}}
 
@@ -184,6 +199,9 @@ let g:vim_markdown_new_list_item_indent = 0
 " }}}
 
 " Markdown Snippets {{{
+
+" to enable folding in markdown.
+let g:markdown_folding = 1
 autocmd Filetype markdown map <Space><Space> <Esc>/<++><Enter>"_c4l
 
 autocmd Filetype markdown inoremap ,1 #<Space>
@@ -214,6 +232,7 @@ autocmd Filetype markdown inoremap ,sh ---<Enter>title: Title<++><Enter>subtitle
 
 autocmd Filetype markdown inoremap ,wh # Things to get done on week <ESC>:read !date '+\%V'<CR>I<backspace><ESC>o
 autocmd Filetype markdown inoremap ,d <ESC>:read ! date '+\%A \%d \%B \%y'<CR>I<backspace><ESC>o
+autocmd Filetype markdown inoremap ,D <ESC>:read ! date '+\%A \%d \%B \%y \%H:\%M'<CR>I<backspace><ESC>o
 
 autocmd Filetype markdown inoremap ,gwr # Security Team Report Week <ESC>:read !date '+\%V'<CR>I<backspace><ESC>A, <ESC>:read !date '+\%Y'<CR>I<backspace><ESC>o<CR><CR>## Actions taken this week<CR><CR><++><CR><CR>## Actions planned for next week<CR><CR><++><CR><CR>## Progress of implementation of framework<CR><CR><++><CR><CR>## Security issues (high/medium) found this week<CR><CR><++><CR><CR>## Overview of actions + owners<CR><CR><++><ESC>18k^
 
@@ -238,7 +257,7 @@ augroup END
 " Goyo {{{
 
 let g:goyo_width = 80
-let g:goyo_height = 35
+let g:goyo_height = 10
 map <leader>r :Goyo<CR>
 
 function! s:goyo_enter()
@@ -293,5 +312,19 @@ augroup END
 let g:netrw_nogx = 1 " disable netrw's gx mapping.
 nmap gx <Plug>(openbrowser-smart-search)
 vmap gx <Plug>(openbrowser-smart-search)
+
+" }}}
+
+" Jedi Settings {{{
+
+let g:jedi#completions_command = "<leader>c"
+
+" }}}
+
+" HTML Snippets {{{
+
+autocmd Filetype html map <Space><Space> <Esc>/<++><Enter>"_c4l
+autocmd Filetype html inoremap ,html <html><CR><head><CR><title><++></title><CR></head><CR><body><CR></body><CR></html><ESC>6k^
+autocmd Filetype html inoremap ,script <script src="<++>"></script><Esc>^
 
 " }}}

@@ -1,0 +1,154 @@
+#!/usr/bin/env bash
+set -o nounset # Treat unset variables as an error
+trap "exit 1" TERM
+export TOP_PID=$$
+
+chatgpt_log="$(date +$HOME/.cache/chatgpt/chatgpt_log_%Y%m%d)"
+touch $chatgpt_log
+
+OPENAI_API_KEY=$(op read "op://personal/openai/api/api-key")
+
+function gpt_role(){
+
+    local role=(\
+        "Assistance:You are a helpful assistant."
+        "Software Security Expert:You are a software Security Expert"\
+    )
+
+    PS3="Select a role: [none = 0] "
+
+    select role in "${role[@]}"
+    do
+        local content=$role;
+        break;
+    done
+
+    if [ -z "$content" ];
+    then
+        kill -s TERM $TOP_PID
+    fi
+
+    echo $content | cut -d ":" -f 2
+
+}
+
+function img(){
+    json=$( jq -n \
+                  --arg pr "$1" \
+                  '{ "model": "dall-e-3", "prompt": $pr, "n": 1, "size": "1024x1024" }'
+              )
+    echo $json
+
+    respond=$(curl -s https://api.openai.com/v1/images/generations \
+      -H "Content-Type: application/json" \
+      -H "Authorization: Bearer $OPENAI_API_KEY" \
+      -d "$json")
+
+    revised_promt=$(echo $respond | jq -r .data[0].revised_prompt)
+    image_url=$(echo $respond | jq -r .data[0].url)
+
+    echo promt: $revised_promt
+    echo
+    echo url: $image_url
+
+    open --url $image_url
+}
+
+function img_variation(){
+
+    filepath="${2}"
+    prompt="${1}"
+    curl https://api.openai.com/v1/images/variations \
+      -H "Authorization: Bearer $OPENAI_API_KEY" \
+      -F image="@${filepath}" \
+      -F model="dall-e-2" \
+      -F n=1 \
+      -F size="1024x1024"
+}
+
+function txt(){
+    model="${2}"
+    role_content="$(gpt_role)"
+    prompt="$1"
+    json=$( jq -n \
+                  --arg md "$model" \
+                  --arg pr "$prompt" \
+                  --arg roleContent "$role_content" \
+                  '{ "model": $md, "messages": [ { "role": "system", "content": $roleContent },{ "role": "user", "content": $pr }]}'
+              )
+    echo $json | tee -a $chatgpt_log
+    respond=$(curl -s https://api.openai.com/v1/chat/completions \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer $OPENAI_API_KEY" \
+     -d "$json")
+    message=$(echo $respond | jq .choices[0].message.content)
+    echo
+    echo -e $message | tee -a $chatgpt_log
+
+    echo
+    if [ "$message" == "null" ]; then echo $respond | jq . ; fi
+}
+
+function get_list_models(){
+    list=$(curl -s https://api.openai.com/v1/models \
+        -H "Authorization: Bearer $OPENAI_API_KEY" | jq -r .data[].id | sort )
+    j=1
+    for i in $list; do echo "$j)" $i; j=$(($j+1)); done | pr -3t -w 120
+}
+
+function help(){
+    echo "text generation:"
+    echo "     openAI txt PROMT"
+    echo
+    echo "image generation:"
+    echo "     openAI img PROMT"
+    echo
+    echo "Get list of models:"
+    echo "     openAI models"
+    echo
+}
+
+#case "${1:-help}" in
+#    img)
+#        img "$2"
+#        ;;
+#    txt)
+#        txt "$2" "${3:-gpt-3.5-turbo}"
+#        ;;
+#    models)
+#        get_list_models
+#        ;;
+#    *)
+#        help
+#        ;;
+#esac
+
+
+while getopts 'i:t:v:mh' opt; do
+  case "$opt" in
+    i)
+      img "${OPTARG}";
+      ;;
+
+    v)
+      img_variation "${OPTARG}" "${3}"
+      ;;
+
+    t)
+      txt  "${OPTARG}" "${3:-gpt-3.5-turbo}"
+      ;;
+
+    m)
+      get_list_models
+      ;;
+
+    ?|h)
+      echo "Usage: $(basename $0)"
+      echo "[-i for image generation followed with PROMT in \"\"]"
+      echo "[-t for text generation followed with PROMT in \"\"]"
+      echo "[-m for getting list of models]"
+      exit 1
+      ;;
+  esac
+done
+shift "$(($OPTIND -1))"

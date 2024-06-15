@@ -1,4 +1,4 @@
-#define base00 #002b36
+#define base00 #000000
 #define base01 #dc322f
 #define base02 #859900
 #define base03 #b58900
@@ -14,9 +14,9 @@
 #define base0D #545f9e
 #define base0E #d33682
 #define base0F #fdf6e3
-#define base0G #93a1a1
-#define base0H #002b36
-#define base0I #93a1a1
+#define base0G #d0d0d0
+#define base0H #000000
+#define base0I #d0d0d0
 
 ! special
 *.foreground:   base0G

@@ -38,4 +38,6 @@ if [ ! -z ${terminal_psid} ]; then
     ${terminal} -e bash --rcfile ~/.bash_profile &
 fi
 
+bing-background
+
 exit 0

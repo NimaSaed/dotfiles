@@ -1,3 +1,29 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
+set -o nounset # Treat unset variables as an error
 
-VBoxManage startvm Win10\ Quintiq 2>&1 > /dev/null &
+vm_name="Windows"
+port_number=29451
+username="administrator"
+password="com2mekisSme"
+
+case $1 in
+    "on")
+        VBoxManage modifyvm $vm_name --natpf1 "remote,tcp,,$port_number,,3389"
+        if [ "$(VBoxManage showvminfo $vm_name --machinereadable | grep VMState= )" == "VMState=\"saved\"" ] || \
+            [ "$(VBoxManage showvminfo $vm_name --machinereadable | grep VMState= )" == "VMState=\"poweroff\"" ]; then
+            VBoxManage startvm --type headless $vm_name
+        fi
+        if [ "$(VBoxManage showvminfo $vm_name --machinereadable | grep VMState= )" == "VMState=\"paused\"" ]; then
+            VBoxManage controlvm $vm_name resume
+        fi
+
+        #remmina -c ${HOME}/.local/share/remmina/group_rdp_windows_localhost.remmina >/dev/null 2>&1
+        xfreerdp /v:localhost:$port_number /u:$username /p:$password /dynamic-resolution /cert:tofu +auto-reconnect /bpp:32 /wm-class:$vm_name
+        sleep 60
+        VBoxManage controlvm $vm_name pause
+        ;;
+    "off")
+        VBoxManage controlvm $vm_name savestate
+        VBoxManage modifyvm $vm_name --natpf1 delete remote
+        ;;
+esac

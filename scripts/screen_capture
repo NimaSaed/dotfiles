@@ -8,21 +8,23 @@ function getScreenSize() {
 
 function screenCapture() {
     getScreenSize
-    ffmpeg -f x11grab  -s $size -i :0.0 -r 25 -vcodec libx264  $output.mkv &> /dev/null
+    ffmpeg -f x11grab  -s $size -i :0.0 -r 25 $output.mp4 &> /dev/null
 }
 
 function screenCaptureWithAudio() {
     getScreenSize
-    ffmpeg -f alsa -i hw:0 -f x11grab -s $size -i :0.0 -r 25 -vcodec libx264  $output.mkv &> /dev/null
+    ffmpeg -f alsa -i hw:0 -f x11grab -s $size -i :0.0 -r 25 -vcodec libx264  $output.mp4 &> /dev/null
 }
 
 function startWebcam() {
-    ffplay -f video4linux2 -i /dev/video0 -video_size 320x240 &> /dev/null &
+    #ffplay -f video4linux2 -i /dev/video0 -video_size 320x240 &> /dev/null &
+    #crop=W:H:X:Y - size of crop W*H and start of the crop X*Y
+    ffplay -f video4linux2 -i /dev/video0 -vf "crop=300:300:200:100,hflip" &> /dev/null &
     sleep 2;
 }
 
 # Screen Capture
-if [ "$#" -eq "0" ]; 
+if [ "$#" -eq "0" ];
 then
     ## Start screen capture
     screenCapture

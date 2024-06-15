@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
-filename=$1
-#pandoc -t revealjs -s -o $filename\.html $filename -V \
-#        revealjs-url=http://lab.hakim.se/reveal-js 
-#qutebrowser $filename\.html
-#rm $filename\.html
-#
-#pandoc file.md -t beamer -o out.pdf
+set -o nounset # Treat unset variables as an error
 
-pandoc "$1" -t beamer -o "$1"\.pdf
-mupdf "$1"\.pdf
-rm "$1"\.pdf
+filename=$(echo $1 | grep -o ^[a-zA-Z0-9_]*)
+# use pandoc and beamer
 
+pandoc "$1" -t beamer -o "$PWD/$filename.pdf" --filter mermaid-filter
+
+#pandoc "$1" -t beamer -o "$PWD/$filename.pdf" --pdf-engine=/Library/TeX/texbin/pdflatex --filter mermaid-filter
+
+echo "$PWD/${filename}.pdf"
+exit 0

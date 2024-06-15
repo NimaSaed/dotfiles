@@ -2,7 +2,7 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-Font pango:Hack 8
+Font pango:Hack 9
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -14,7 +14,7 @@ bindsym $mod+Return exec --no-startup-id i3-sensible-terminal
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -i -fn Hack:size=9 -p run: -sb '$xforeground' -sf '$xbackground' -nb '$xbackground' -nf '$xforeground'"
+bindsym $mod+d exec --no-startup-id i3-dmenu-desktop --dmenu="dmenu -i -fn Hack:size=10 -p run: -sb '$xforeground' -sf '$xbackground' -nb '$xbackground' -nf '$xforeground'"
 
 # start dmenu bookmark
 bindsym $mod+b exec --no-startup-id "~/.scripts/bookmarks"
@@ -65,14 +65,14 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces
 set $ws1 "1:"
-set $ws2 "2:"
-set $ws3 "3:"
-set $ws4 "4:"
-set $ws5 "5:"
-set $ws6 "6:"
-set $ws7 "7:"
-set $ws8 "8:"
-set $ws9 "9:"
+set $ws2 "2:"
+set $ws3 "3:"
+set $ws4 "4:"
+set $ws5 "5:"
+set $ws6 "6:"
+set $ws7 "7:"
+set $ws8 "8:"
+set $ws9 "9:"
 set $ws10 "10:"
 
 # switch to workspace
@@ -100,25 +100,33 @@ bindsym $mod+Shift+9 move container to workspace $ws9
 bindsym $mod+Shift+0 move container to workspace $ws10
 
 # application's workspace assignment
-assign [class="firefox"] $ws2
-for_window [class="firefox"] focus
-assign [class="Skype"] $ws3
-assign [class="VirtualBox Manager"] $ws5
-for_window [class="VirtualBox Manager"] focus
-assign [title="Win10 Quintiq*"] $ws4
-for_window [title="Win10 Quintiq*"] focus
-for_window [class="St"] focus
+for_window [class="firefox"] move to workspace $ws2
+for_window [class="Chromium"] move to workspace $ws2
+for_window [class="Chromium-browser"] move to workspace $ws8
+for_window [class="Microsoft Teams - Preview"] move to workspace $ws3
+for_window [title="Kali-Linux*"] move to workspace $ws4
+for_window [class="xfreerdp"] move to workspace $ws4
+for_window [title="^Windows \[Running\] *"] move to workspace $ws5
+for_window [class="Windows"] move to workspace $ws5
+for_window [class="VirtualBox Manager"] move to workspace $ws6
+for_window [class="burp-StartBurp"] move to workspace $ws7
+for_window [class="firefoxdeveloperedition"] move to workspace $ws8
 
 # Window setting
-for_window [class="^.*"] border pixel 0
+for_window [class="^.*"] border pixel 3
+#for_window [class="St"] border pixel 1
 new_window 1pixel
+hide_edge_borders smart
 
 # floating windows
 for_window [title="About Mozilla Firefox"] floating enable
-for_window [class="ffplay"] floating enable move right 750px,move down 380px sticky enable
+for_window [title="Microsoft Teams Notification"] floating enable move position 1ppt 1ppt sticky enable
+for_window [class="ffplay"] floating enable resize set 9ppt 16ppt
+for_window [class="ffplay"] move position 90ppt 82ppt sticky enable
+for_window [title="^1Password"] floating enable move position 1ppt 1ppt sticky enable
 
 # display workspace assignment
-workspace $ws10 output DP2-2
+workspace $ws10 output DP1 DP2 DP1-1 DP1-2 DP1-3
 
 # move workspace between displays
 bindsym $mod+Shift+u move workspace to output up
@@ -130,7 +138,7 @@ bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+#bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # resize window
 mode "resize" {
@@ -147,6 +155,21 @@ mode "resize" {
 }
 
 bindsym $mod+r mode "resize"
+
+# power management
+set $power_management "Shutdown: (s) Restart: (r) Logout (l)"
+mode $power_management {
+
+        bindsym s exec --no-startup-id poweroff --poweroff
+        bindsym r exec --no-startup-id poweroff --reboot
+        bindsym l exec --no-startup-id i3-msg exit
+
+        # back to normal
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+shift+e mode "default"
+}
+bindsym $mod+shift+e mode $power_management
 
 # Get colors from Xresources
 set_from_resource $xforeground  foreground
@@ -171,11 +194,11 @@ set_from_resource $xcolor15     color15
 
 # Colors
 # Class                 border          backgr          text            indic
-client.focused          $xcolor6        $xforeground    $xbackground    $xcolor15
-client.focused_inactive $xcolor6        $xbackground    $xforeground
-client.unfocused        $xcolor6        $xbackground    $xforeground
-client.urgent           $xbackground    $xcolor9        $xbackground
-client.placeholder      $xcolor7        $xcolor7        $xcolor14
+client.focused          $xcolor0        $xcolor6        $xcolor0        $xcolor14
+client.focused_inactive $xcolor0        $xcolor8        $xcolor0        $xcolor15
+client.unfocused        $xcolor0        $xcolor8        $xcolor0        $xcolor15
+client.urgent           $xcolor0        $xcolor8        $xcolor0        $xcolor15
+client.placeholder      $xcolor0        $xcolor0        $xcolor0
 
 # Start i3bar to display a workspace bar
 bar {
@@ -185,16 +208,16 @@ bar {
     position top
     colors {
         #Where      #Color
-        background  $xbackground
+        background  $xcolor0
         statusline  $xforeground
         separator   $xforeground
 
         #Where              #Border         #Background     #Text
-        focused_workspace   $xbackground    $xbackground    $xcolor15
-        active_workspace    $xbackground    $xbackground    $xcolor15
-        inactive_workspace  $xbackground    $xbackground    $xcolor7
-        urgent_workspace    $xbackground    $xbackground    $xcolor1
-        binding_mode        $xcolor1        $xcolor1        $xcolor0
+        focused_workspace   $xcolor0        $xcolor0        $xforeground
+        active_workspace    $xcolor0        $xcolor0        $xcolor8
+        inactive_workspace  $xcolor0        $xcolor0        $xcolor8
+        urgent_workspace    $xcolor0        $xcolor0        $xcolor1
+        binding_mode        $xcolor0        $xcolor1        $xcolor15
     }
 }
 
@@ -206,6 +229,7 @@ bindsym $mod+Shift+x exec --no-startup-id bash ~/.config/i3/lock.sh
 
 # Background
 exec_always --no-startup-id hsetroot -solid "$xcolor8"
+exec_always --no-startup-id "sleep 5; $HOME/.scripts/bing-background 0 force"
 
 # unclutter, to hide mouse pointer wheneven is not needed
 exec --no-startup-id unclutter -idle 1.5
@@ -213,38 +237,72 @@ exec --no-startup-id unclutter -idle 1.5
 # volume control
 # Use pactl to adjust volume in PulseAudio.
 exec --no-startup-id pactl set-sink-mute $(pactl list short sinks | grep output | awk '{print $1}') 1
-exec --no-startup-id pactl set-source-mute $(pactl list short sources | grep input | awk '{print $1}') 1;
+exec --no-startup-id pactl set-sink-volume $(pactl list short sinks | grep output | awk '{print $1}') 50%
+exec --no-startup-id pactl set-source-mute $(pactl list short sources | grep input | awk '{print $1}') 1
+exec --no-startup-id pactl set-source-volume $(pactl list short sources | grep input | awk '{print $1}') 50%
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10%; exec --no-startup-id pkill -RTMIN+10 i3blocks;
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10%; exec --no-startup-id pkill -RTMIN+10 i3blocks;
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle; exec --no-startup-id pkill  -RTMIN+10 i3blocks;
-bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute $(pactl list short sources | grep input | awk '{print $1}') toggle; exec --no-startup-id pkill  -RTMIN+10 i3blocks;
+bindsym shift+XF86AudioMute exec --no-startup-id pactl set-source-mute $(pactl list short sources | grep input | awk '{print $1}') toggle; exec --no-startup-id pkill  -RTMIN+10 i3blocks;
+
+#Media
+bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
+bindsym XF86AudioNext exec --no-startup-id playerctl next
+bindsym XF86AudioPrev exec --no-startup-id playerctl previous
 
 # Brightness
-exec --no-startup-id "xbacklight -set 20"
-bindsym XF86MonBrightnessDown exec --no-startup-id "xbacklight - 10"
-bindsym XF86MonBrightnessUp exec --no-startup-id "xbacklight + 10"
+exec --no-startup-id "xbacklight -set 10"
+bindsym XF86MonBrightnessDown exec --no-startup-id "xbacklight -dec 5"
+bindsym XF86MonBrightnessUp exec --no-startup-id "xbacklight -inc 5"
+
+# task view key
+bindsym Mod4+Tab exec --no-startup-id "$HOME/.scripts/airpod"
+bindsym shift+Mod4+Tab exec --no-startup-id "$HOME/.scripts/airpod discon"
 
 # Display
-exec_always --no-startup-id xrandr --output eDP-1 --mode 1920x1080
-bindsym XF86Display exec --no-startup-id "~/.scripts/secondScreen e"
-bindsym shift+XF86Display exec --no-startup-id "~/.scripts/secondScreen m"
-bindsym ctrl+XF86Display exec --no-startup-id "~/.scripts/secondScreen s"
-bindsym mod1+XF86Display exec --no-startup-id "~/.scripts/secondScreen off"
+exec --no-startup-id "~/.scripts/secondScreen off"
+set $display "Display: extend (e) mirror (m) external (s) off (q)"
+mode $display {
+
+        bindsym e exec --no-startup-id "~/.scripts/secondScreen e"
+        bindsym m exec --no-startup-id "~/.scripts/secondScreen m"
+        bindsym s exec --no-startup-id "~/.scripts/secondScreen s"
+        bindsym q exec --no-startup-id "~/.scripts/secondScreen off"
+
+        # back to normal
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym Mod4+p mode "default"
+}
+bindsym Mod4+p mode $display
+exec --no-startup-id xiccd
 
 # Screen Capture
-bindsym XF86Favorites exec --no-startup-id "~/.scripts/screen_capture -w"
-bindsym shift+XF86Favorites exec --no-startup-id "~/.scripts/screen_capture -a"
-bindsym ctrl+XF86Favorites exec --no-startup-id "~/.scripts/screen_capture"
-bindsym mod1+XF86Favorites exec --no-startup-id "~/.scripts/screen_capture -q"
+set $screen_capture "Screen Capture:  (c)  (w)  (a) Stop(q)"
+mode $screen_capture {
+
+        bindsym w exec --no-startup-id "~/.scripts/screen_capture -w"; mode "default"
+        bindsym a exec --no-startup-id "~/.scripts/screen_capture -a"; mode "default"
+        bindsym c exec --no-startup-id "~/.scripts/screen_capture"; mode "default"
+        bindsym q exec --no-startup-id "~/.scripts/screen_capture -q"; mode "default"
+
+        # back to normal
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym XF86Search mode "default"
+}
+bindsym XF86Search mode $screen_capture
 
 # Screenshot
 bindsym --release Print exec --no-startup-id "~/.scripts/screenshots"
-bindsym --release shift+Print exec --no-startup-id "~/.scripts/screenshots note"
+#bindsym --release Print exec --no-startup-id "ksnip -r"
 
 # Dropbox
 exec --no-startup-id dropbox-cli start
 
-# Performance tuning
-# https://developer.ridgerun.com/wiki/index.php/Linux_Performance_and_Tuning_Tricks
-# Tuning Write/Read memory operations. 1500 is suggested by powertop
-exec_always --no-startup-id echo 1500 | tee /proc/sys/vm/dirty_writeback_centisecs
+# Notification (using dunst)
+exec --no-startup-id dunst
+
+# Disable screen saver
+exec xset -dpms
+exec xset s off

@@ -19,35 +19,41 @@
 
 set -o nounset                                  # Treat unset variables as an error
 
+#mkdir ${HOME}/.scripts
+#mkdir ${HOME}/.config
+#mkdir ${HOME}/.colors
+#mkdir ${HOME}/.dircolors
+#mkdir ${HOME}/.vifm
+#
 # Scripts
-ln -sfn ${PWD}/scripts/ ${HOME}/.scripts
+ln -sfn "${PWD}/scripts/" "${HOME}/.scripts"
 
 # Bash
-ln -sfn ${PWD}/bash/.bash_profile  ${HOME}
-ln -sfn ${PWD}/bash/.bashrc ${HOME}
+ln -sfn "${PWD}/bash/.bash_profile"  ${HOME}
+ln -sfn "${PWD}/bash/.bashrc" ${HOME}
 
 # Tmux
-ln -sfn ${PWD}/tmux/.tmux.conf  ${HOME}
+ln -sfn "${PWD}/tmux/.tmux.conf"  ${HOME}
 
 # Vim
-ln -sfn ${PWD}/vim/.vimrc ${HOME}
+ln -sfn "${PWD}/vim/.vimrc" ${HOME}
 
 # X11
-ln -sfn ${PWD}/x11/.Xresources ${HOME}
-ln -sfn ${PWD}/x11/.xinitrc ${HOME}
+ln -sfn "${PWD}/x11/.Xresources" ${HOME}
+ln -sfn "${PWD}/x11/.xinitrc" ${HOME}
 
 # i3-wm
-ln -sfn ${PWD}/i3/ ${HOME}/.config/
+ln -sfn "${PWD}/i3/" ${HOME}/.config/
 
 # MPV media player
-ln -sfn ${PWD}/mpv/ ${HOME}/.config/
+ln -sfn "${PWD}/mpv/" ${HOME}/.config/
 
 # Colors
-ln -sfn ${PWD}/colors/ ${HOME}/.colors
-ln -sfn ${PWD}/dircolors/ ${HOME}/.dircolors
+ln -sfn "${PWD}/colors/" ${HOME}/.colors
+ln -sfn "${PWD}/dircolors/" ${HOME}/.dircolors
 
 # vifm (vi file manager)
-ln -sfn ${PWD}/vifm/ ${HOME}/.vifm
+ln -sfn "${PWD}/vifm/" ${HOME}/.vifm
 
 # git config
-ln -sfn ${PWD}/git/.gitconfig ${HOME}
+ln -sfn "${PWD}/git/.gitconfig" ${HOME}

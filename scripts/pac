@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 
-
-
-curl -s "https://www.archlinux.org/mirrorlist/?country=${1:-JP}&protocol=${2:-https}&ip_version=${3:-4}" | cut -c2- > mirrors
+ignore_list=""
+curl -s "https://archlinux.org/mirrorlist/?country=${1:-NL}&protocol=${2:-https}&ip_version=${3:-4}" | cut -c2- > mirrors
 rankmirrors -n ${4:-1} -v mirrors | tee  mirrorlist
 rm mirrors
 sudo mv mirrorlist /etc/pacman.d/mirrorlist
-yay -Syyu
-
+yay -Syyu --ignore $ignore_list
