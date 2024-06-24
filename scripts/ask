@@ -3,7 +3,9 @@ set -o nounset # Treat unset variables as an error
 trap "exit 1" TERM
 export TOP_PID=$$
 
-chatgpt_log="$(date +$HOME/.cache/chatgpt/chatgpt_log_%Y%m%d)"
+chatgpt_log_folder="$HOME/.cache/chatgpt/"
+chatgpt_log="$(date +${chatgpt_log_folder}chatgpt_log_%Y%m%d)"
+if [ ! -d ${chatgpt_log_folder} ]; then mkdir -p ${chatgpt_log_folder}; fi
 touch $chatgpt_log
 
 OPENAI_API_KEY=$(op read "op://personal/openai/api/api-key")
