@@ -2,6 +2,9 @@ set -o vi
 bind -m vi-command 'Control-l: clear-screen'
 bind -m vi-insert 'Control-l: clear-screen'
 
+eval "$(fzf --bash)"
+export BAT_THEME="Solarized (light)"
+
 if [ "$(uname)" = "Darwin" ];
 then
     eval $(gdircolors -b ~/.dircolors/dircolors)
@@ -101,6 +104,7 @@ alias msfstop="docker-compose -f ${msf_path} stop"
 alias msfdown="docker-compose -f ${msf_path} down"
 
 # cat with line number
+alias cat='bat'
 alias ccat='cat -n'
 
 # add docker host for windows docker and WSL

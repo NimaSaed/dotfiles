@@ -12,6 +12,8 @@ vim
 git
 pam-reattach
 jq
+bat
+fzf
 
 # pen test tools
 nmap
