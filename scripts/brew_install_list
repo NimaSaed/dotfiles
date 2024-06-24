@@ -1,0 +1,43 @@
+
+# pakcages
+
+# utils
+coreutils
+tmux
+monitorcontrol
+#iterm2
+alacritty
+bash
+vim
+git
+pam-reattach
+jq
+
+# pen test tools
+nmap
+burp-suite-professional
+semgrep
+trufflehog
+
+
+# password manager
+1password
+1password-cli
+
+# windows manager
+amethyst
+rectangle
+
+#Flipper
+qflipper
+
+#Social
+microsoft-teams
+zoom
+
+#Productivity
+grammarly-desktop
+
+# IaC
+terraform
+packer
