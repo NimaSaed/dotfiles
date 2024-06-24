@@ -57,3 +57,6 @@ ln -sfn "${PWD}/vifm/" ${HOME}/.vifm
 
 # git config
 ln -sfn "${PWD}/git/.gitconfig" ${HOME}
+
+# alacritty
+ln -sfn "${PWD}/alacritty/" ${HOME}/.config/
