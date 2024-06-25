@@ -3,17 +3,22 @@
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
 
+" To align text using tabs automaticly.
 Plug 'godlygeek/tabular'
-Plug 'preservim/vim-markdown'
-"Plug 'plasticboy/vim-markdown'
-Plug 'davidhalter/jedi-vim'
-Plug 'hashivim/vim-terraform'
+
+" Do I really need this?
+"Plug 'davidhalter/jedi-vim'
+
+" my color baseline
 Plug 'chriskempson/base16-vim'
-Plug 'wellle/targets.vim'
-Plug 'junegunn/goyo.vim'
+
+" Syntax highlight for different languages
+Plug 'sheerun/vim-polyglot'
+
+" use gx to open links in browser
 Plug 'tyru/open-browser.vim'
-Plug 'PProvost/vim-ps1'
-Plug 'elzr/vim-json'
+
+"Plug 'elzr/vim-json'
 
 call plug#end()
 
@@ -191,13 +196,6 @@ map <leader>p : ! ~/.scripts/makeslides '%'<bar> xargs -I {} bash -c "open '{}';
 
 " }}}
 
-" Markdown Syntax {{{
-
-let g:vim_markdown_folding_disabled = 1
-let g:vim_markdown_new_list_item_indent = 0
-
-" }}}
-
 " Markdown Snippets {{{
 
 " to enable folding in markdown.
@@ -251,36 +249,6 @@ augroup saveFolding
     autocmd BufWinLeave note_index.md mkview
     autocmd BufWinEnter note_index.md silent loadview
 augroup END
-
-" }}}
-
-" Goyo {{{
-
-let g:goyo_width = 80
-let g:goyo_height = 10
-map <leader>r :Goyo<CR>
-
-function! s:goyo_enter()
-    augroup numbertoggle
-      set nonumber norelativenumber
-      autocmd!
-      autocmd BufEnter,FocusGained,InsertLeave * set norelativenumber
-      autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-    augroup END
-endfunction
-
-function! s:goyo_leave()
-    call HighlighColor()
-    augroup numbertoggle
-      set number relativenumber
-      autocmd!
-      autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-      autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-    augroup END
-endfunction
-
-autocmd! User GoyoEnter nested call <SID>goyo_enter()
-autocmd! User GoyoLeave nested call <SID>goyo_leave()
 
 " }}}
 
