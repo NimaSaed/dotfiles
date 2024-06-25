@@ -1,43 +1,16 @@
+import = [ "~/.config/alacritty/themes/solarized_dark.toml"]
+
 [window]
 padding.x = 15
 padding.y = 25
 
 decorations = "Buttonless"
 
-opacity = 1.0
-blur = false
+opacity = 0.85
+blur = true
 
 option_as_alt = "Both"
 
 [font]
 normal.family = "Monaco"
 size = 16
-
-# Colors (Solarized Light)
-[colors.cursor]
-text = '#ffffff'
-cursor = '#586e75'
-
-[colors.primary]
-background = '#fdf6e3'
-foreground = '#586e75'
-
-[colors.normal]
-black   = '#fdf6e3'
-red     = '#dc322f'
-green   = '#859900'
-yellow  = '#b58900'
-blue    = '#268bd2'
-magenta = '#6c71c4'
-cyan    = '#2aa198'
-white   = '#657b83'
-
-[colors.bright]
-black   = '#93a1a1'
-red     = '#b52828'
-green   = '#677300'
-yellow  = '#8f6400'
-blue    = '#2272ab'
-magenta = '#545f9e'
-cyan    = '#d33682'
-white   = '#002b36'
