@@ -3,6 +3,7 @@
 #
 export BASH_SILENCE_DEPRECATION_WARNING=1
 PATH="${HOME}/.scripts/:${PATH}"
+PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
 export PATH="/opt/homebrew/bin:$PATH"
 export PATH="/opt/homebrew/sbin:$PATH"
 
