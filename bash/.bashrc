@@ -3,6 +3,25 @@ bind -m vi-command 'Control-l: clear-screen'
 bind -m vi-insert 'Control-l: clear-screen'
 
 eval "$(fzf --bash)"
+# Preview file content using bat (https://github.com/sharkdp/bat)
+
+export FZF_CTRL_T_OPTS="
+  --walker-skip .git,node_modules,target,.terraform
+  --preview 'bat -n --color=always {}'
+  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+
+_fzf_comprun() {
+  local command=$1
+  shift
+
+  case "$command" in
+    cd)           fzf --preview 'tree -L 2 -C {} | head -200'   "$@" ;;
+    export|unset) fzf --preview "eval 'echo \$'{}"         "$@" ;;
+    ssh)          fzf --preview 'dig +short {}'                   "$@" ;;
+    *)            fzf --preview 'bat -n --color=always {}' "$@" ;;
+  esac
+}
+
 export BAT_THEME="Solarized (light)"
 
 if [ "$(uname)" = "Darwin" ];
@@ -20,7 +39,13 @@ fi
 function git_branch() {
     if [ ! -z "$(git branch 2>/dev/null | grep ^*)" ];
     then
-        echo "($(git branch 2>/dev/null | grep ^* | colrm 1 2))";
+        echo -n "($(git branch 2>/dev/null | grep ^* | colrm 1 2) "
+        changes="$(git status -s | grep '^ M' | wc -l | awk '{print $1}')"
+        echo -n "${changes:-0}M "
+        untracked="$(git status -s | grep '^??' | wc -l | awk '{print $1}')"
+        echo -n "${untracked:-0}? "
+        stash="$(git status --show-stash | grep -E "Your stash currently has [0-9]{1,} entr(y|ies)" | grep -Eo '[0-9]{1,}')"
+        echo -n "${stash:-0}S)"
     fi
 }
 
@@ -31,11 +56,12 @@ function get_aws_profile {
     fi
 }
 
-PS1="\[\e[1;49;39m\]>_ "
-PS1+="\[\e[0;49;36m\](\[\e[0;49;96m\]\W\[\e[0;49;36m\])"
+#PS1="\[\e[1;49;39m\]>_ "
+PS1="\[\e[0;49;36m\](\[\e[0;49;96m\]\w\[\e[0;49;36m\])"
 PS1+="\[\e[0;49;33m\]\$(git_branch)"
 PS1+="\[\e[7;49;93m\]\$(get_aws_profile)"
-PS1+="\[\e[0;49;39m\] "
+PS1+="\[\e[0;49;39m\]\n"
+PS1+="\[\e[1;49;39m\]>_ "
 
 # History Setting
 HISTSIZE=10000000
@@ -371,3 +397,4 @@ function vmssh(){
         fi
     fi
 }
+source ~/.config/op/plugins.sh
