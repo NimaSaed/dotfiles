@@ -1,4 +1,4 @@
-import = [ "~/.config/alacritty/themes/solarized_dark.toml"]
+import = [ "~/.config/alacritty/themes/solarized_light.toml"]
 
 [window]
 padding.x = 15
@@ -12,5 +12,6 @@ blur = false
 option_as_alt = "Both"
 
 [font]
-normal.family = "Monaco"
+#normal.family = "Monaco"
+normal.family = "firaCode Nerd Font Mono"
 size = 16
