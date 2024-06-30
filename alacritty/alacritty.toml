@@ -13,5 +13,17 @@ option_as_alt = "Both"
 
 [font]
 #normal.family = "Monaco"
-normal.family = "firaCode Nerd Font Mono"
-size = 16
+#normal.family = "firaCode Nerd Font Mono"
+normal.family = "Hack Nerd Font Mono"
+size = 18
+
+[cursor]
+blink_interval = 500
+blink_timeout = 0
+unfocused_hollow = false
+    [cursor.style]
+    shape = "Block"
+    blinking = "Always"
+
+[mouse]
+hide_when_typing = true
