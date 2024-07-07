@@ -65,7 +65,7 @@ function install_os()
 
     echo "Installing Arch Linux on root"
 
-    pacstrap /mnt base base-devel linux linux-firmware mkinitcpio dhcpcd iwd lvm2 $package_list || exit 1
+    pacstrap /mnt base base-devel linux linux-firmware mkinitcpio dhcpcd iwd wpa_supplicant lvm2 $package_list || exit 1
     sleep 1
     genfstab -U /mnt > /mnt/etc/fstab
     sleep 1
