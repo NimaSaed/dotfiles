@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+
 dir=$(dirname $(dirname $(readlink -f "$0")))
 
 drive=nvme0n1
@@ -18,6 +19,12 @@ my_user=nima
 
 function install_os()
 {
+    if [ -e ${dir}/scripts/archPackages ];
+    then
+        package_list=$(cat ${dir}/scripts/archPackages | grep ^[^#]);
+    else echo "cannot find packages file"; exit 1;
+    fi
+
     rankmirrors &> /dev/null
     if [ "$?" == "127" ];
     then
@@ -57,8 +64,8 @@ function install_os()
     sleep 1
 
     echo "Installing Arch Linux on root"
-    package_list=$(cat ${dir}/scripts/packages | grep ^[^#])
-    pacstrap /mnt base base-devel linux linux-firmware mkinitcpio dhcpcd wpa_supplicant lvm2 $package_list || exit 1
+
+    pacstrap /mnt base base-devel linux linux-firmware mkinitcpio dhcpcd iwd lvm2 $package_list || exit 1
     sleep 1
     genfstab -U /mnt > /mnt/etc/fstab
     sleep 1
