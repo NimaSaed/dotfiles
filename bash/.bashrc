@@ -7,7 +7,7 @@ bind -m vi-insert 'Control-l: clear-screen'
 source ~/.config/op/plugins.sh
 
 # oh my posh
-eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/oh-my-posh.toml)"
+#eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/oh-my-posh.toml)"
 #eval "$(oh-my-posh init -s bash --config 'https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/jandedobbeleer.omp.json')"
 
 
@@ -48,13 +48,14 @@ fi
 function git_branch() {
     if [ ! -z "$(git branch 2>/dev/null | grep ^*)" ];
     then
-        echo -n "$(git branch 2>/dev/null | grep ^* | colrm 1 2) "
-        changes="$(git status -s | grep '^ M' | wc -l | awk '{print $1}')"
-        echo -n "${changes:-0}M "
-        untracked="$(git status -s | grep '^??' | wc -l | awk '{print $1}')"
-        echo -n "${untracked:-0}? "
-        stash="$(git status --show-stash | grep -E "Your stash currently has [0-9]{1,} entr(y|ies)" | grep -Eo '[0-9]{1,}')"
-        echo -n "${stash:-0}S"
+        echo -n "$(git branch 2>/dev/null | grep ^* | colrm 1 2)"
+        #echo -n " "
+        #changes="$(git status -s | grep '^ M' | wc -l | awk '{print $1}')"
+        #echo -n "${changes:-0}M "
+        #untracked="$(git status -s | grep '^??' | wc -l | awk '{print $1}')"
+        #echo -n "${untracked:-0}? "
+        #stash="$(git status --show-stash | grep -E "Your stash currently has [0-9]{1,} entr(y|ies)" | grep -Eo '[0-9]{1,}')"
+        #echo -n "${stash:-0}S"
     fi
 }
 
@@ -71,8 +72,8 @@ PS1="\n"
 PS1+="\[\e[0;49;36m\]\[\e[0;49;96m\]\w\[\e[0;49;36m\] "
 PS1+="\[\e[0;49;33m\]\$(git_branch) "
 PS1+="\[\e[7;49;93m\]\$(get_aws_profile)"
-PS1+="\[\e[0;49;39m\]\n"
-PS1+="\[\e[1;49;39m\]>_ "
+PS1+="\[\e[0;49;39m\]" #\n"
+PS1+="\[\e[1;49;39m\]>_\[\e[0;49;39m\] "
 
 PS2=">> "
 
