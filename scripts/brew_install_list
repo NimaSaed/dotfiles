@@ -14,6 +14,9 @@ pam-reattach
 jq
 bat
 fzf
+oh-my-posh
+font-hack-nerd-font
+gnu-sed
 
 # pen test tools
 nmap
