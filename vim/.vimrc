@@ -67,14 +67,14 @@ set incsearch
 set hlsearch
 
 " set tabs to have 8 spaces
-set ts=4
-set tabstop=4
+"set ts=2
+set tabstop=2
 
 " expand tabs into spaces
 set expandtab
 
 " when using the >> or << commands, shift lines by 4 spaces
-set shiftwidth=4
+set shiftwidth=2
 
 " indent when moving to the next line while writing code
 " set autoindent
