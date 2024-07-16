@@ -4,7 +4,7 @@ bind -m vi-command 'Control-l: clear-screen'
 bind -m vi-insert 'Control-l: clear-screen'
 
 # 1password
-source ~/.config/op/plugins.sh
+if [ -x "$(command -v op)" ]; then source ~/.config/op/plugins.sh; fi
 
 # oh my posh
 #eval "$(oh-my-posh init bash --config ~/.config/oh-my-posh/oh-my-posh.toml)"

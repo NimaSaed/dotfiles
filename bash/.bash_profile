@@ -12,8 +12,6 @@ export PATH="/opt/homebrew/sbin:$PATH"
 [[ -r "$(brew --prefix)/etc/bash_completion.d/git-completion.bash" ]] && . "$(brew --prefix)/etc/bash_completion.d/git-completion.bash"
 #[[ -r "$(brew --prefix)/etc/bash_completion.d/" ]] && . "$(brew --prefix)/etc/bash_completion.d/"
 
-# 1password
-source /Users/nima/.config/op/plugins.sh
 source <(op completion bash)
 
 if [ "$(tty)" = "/dev/tty1" ]; then
