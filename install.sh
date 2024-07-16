@@ -61,5 +61,8 @@ ln -sfn "${PWD}/git/.gitconfig" ${HOME}
 # alacritty
 ln -sfn "${PWD}/alacritty/" ${HOME}/.config/
 
+# amethyst
+ln -sfn "${PWD}/amethyst" ${HOME}/.config/
+
 # oh-my-posh
 ln -sfn "${PWD}/oh-my-posh/" ${HOME}/.config/
