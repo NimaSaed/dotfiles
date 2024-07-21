@@ -66,3 +66,6 @@ ln -sfn "${PWD}/amethyst" ${HOME}/.config/
 
 # oh-my-posh
 ln -sfn "${PWD}/oh-my-posh/" ${HOME}/.config/
+
+# install mac apps if this is a macos
+if [ "$(uname)" = "Darwin" ]; then ./scripts/mac_setup.sh; fi
