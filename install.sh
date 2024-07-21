@@ -20,7 +20,7 @@
 set -o nounset                                  # Treat unset variables as an error
 
 #mkdir ${HOME}/.scripts
-#mkdir ${HOME}/.config
+if [ ! -d "${HOME}/.config" ]; then mkdir ${HOME}/.config; fi
 #mkdir ${HOME}/.colors
 #mkdir ${HOME}/.dircolors
 #mkdir ${HOME}/.vifm

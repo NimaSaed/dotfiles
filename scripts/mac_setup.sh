@@ -6,6 +6,10 @@ dir=$(dirname $(readlink -f "$0"))
 # install brew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
+# add brew shellenv to zsh to continue the installation
+(echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> /Users/test/.bash_profile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 # install brew packages
 cat ${dir}/brew_install_list | grep -v -E '(^#|^$)' | xargs -I {} brew reinstall {}
 
