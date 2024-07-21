@@ -27,3 +27,8 @@ unfocused_hollow = false
 
 [mouse]
 hide_when_typing = true
+
+
+[shell]
+program = "/opt/homebrew/bin/bash"
+args = ["-l"]
