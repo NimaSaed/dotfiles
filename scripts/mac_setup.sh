@@ -22,3 +22,16 @@ curl -fLo "$HOME/.vim/autoload/plug.vim" --create-dirs \
     'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 vim +PlugInstall +qall
 
+# Modify dock behavior
+
+# move it to left
+defaults write com.apple.dock orientation left
+# turn on auto hide
+defaults write com.apple.dock autohide -bool true
+# add delay to auto hide
+defaults write com.apple.dock autohide-delay -float 1000
+# to put it back defaults delete com.apple.dock autohide-delay
+# Remove app bouncing
+defaults write com.apple.dock no-bouncing -bool TRUE
+# restart dock
+killall Dock

@@ -1,11 +1,9 @@
-
 # pakcages
 
 # utils
 coreutils
 tmux
 monitorcontrol
-#iterm2
 alacritty
 bash
 vim
@@ -23,7 +21,7 @@ nmap
 burp-suite-professional
 semgrep
 trufflehog
-
+parallels
 
 # password manager
 1password
@@ -38,6 +36,7 @@ qflipper
 
 #Social
 microsoft-teams
+slack
 zoom
 
 #Productivity
