@@ -33,5 +33,10 @@ defaults write com.apple.dock autohide-delay -float 1000
 # to put it back defaults delete com.apple.dock autohide-delay
 # Remove app bouncing
 defaults write com.apple.dock no-bouncing -bool TRUE
+
+# For some reason, mission control doesn’t like that AeroSpace puts a lot of windows in the bottom right corner of the screen. Mission control shows windows too small even there is enough space to show them bigger.
+# There is a workaround. You can enable Group windows by application setting:
+defaults write com.apple.dock expose-group-apps -bool true
+
 # restart dock
 killall Dock

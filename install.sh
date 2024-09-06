@@ -64,6 +64,9 @@ ln -sfn "${PWD}/alacritty/" ${HOME}/.config/
 # amethyst
 ln -sfn "${PWD}/amethyst" ${HOME}/.config/
 
+# aerospace
+ln -sfn "${PWD}/aerospace" ${HOME}/.config/
+
 # oh-my-posh
 ln -sfn "${PWD}/oh-my-posh/" ${HOME}/.config/
 
