@@ -6,17 +6,17 @@ then
     themeFile="/Users/nima/.config/alacritty/alacritty.toml"
     case $1 in
         l)
-            sed -i 's/dark/light/g' $themeFile
+            $sed -i 's/dark/light/g' $themeFile
             ;;
         d)
-            sed -i 's/light/dark/g' $themeFile
+            $sed -i 's/light/dark/g' $themeFile
             ;;
         t)
-            if [ "$(head -1 $themeFile | grep -Eo "_(d|l)" | grep -Eo "[a-zA-Z]")" == "d" ];
+            if [ "$(yq .general.import  -oy $themeFile | grep -Eo "_(d|l)" | grep -Eo "[a-zA-Z]")" == "d" ];
             then
-                sed -i 's/dark/light/g' $themeFile
+                $sed -i 's/dark/light/g' $themeFile
             else
-                sed -i 's/light/dark/g' $themeFile
+                $sed -i 's/light/dark/g' $themeFile
             fi
             ;;
     esac

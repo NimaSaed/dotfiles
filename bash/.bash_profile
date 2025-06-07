@@ -5,6 +5,9 @@ then
 	export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
 	export HOMEBREW_REPOSITORY="/opt/homebrew";
 	export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}";
+	export PATH="/opt/homebrew/opt/grep/libexec/gnubin:$PATH"
+	export PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
+
 	export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
 	export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
 fi
@@ -16,6 +19,10 @@ export PATH="${HOME}/.scripts/:${PATH}"
 #[[ -r "$(brew --prefix)/etc/bash_completion.d/" ]] && . "$(brew --prefix)/etc/bash_completion.d/"
 
 source <(op completion bash)
+source <(openfga completion bash)
+source <(fga completion bash)
+#source <(docker completion bash)
+source <(podman completion bash)
 
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 export GPG_TTY=$(tty)

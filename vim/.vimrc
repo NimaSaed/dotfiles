@@ -20,6 +20,9 @@ Plug 'tyru/open-browser.vim'
 
 "Plug 'elzr/vim-json'
 
+"Codeium AI
+Plug 'exafunction/codeium.vim'
+
 call plug#end()
 
 " }}}

@@ -43,14 +43,15 @@ color 34 0 "[$(date +%Y-%m-%d\ @\ %H:%M:%S)]"
 color 95 7 "Getting list of brew cask packages installed"
 echo
 
-cask_list=$(brew list --cask)
+#cask_list=$(brew list --cask)
 
 color 32 1 "[*]"
 color 34 0 "[$(date +%Y-%m-%d\ @\ %H:%M:%S)]"
 color 95 7 "Upgrading cask packages"
 echo
 
-brew upgrade --cask $cask_list 2>&1 | indent
+#brew upgrade --cask $cask_list 2>&1 | indent
+brew upgrade --cask --greedy | indent
 
 color 32 1 "[*]"
 color 34 0 "[$(date +%Y-%m-%d\ @\ %H:%M:%S)]"
