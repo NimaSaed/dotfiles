@@ -71,4 +71,9 @@ ln -sfn "${PWD}/aerospace" ${HOME}/.config/
 ln -sfn "${PWD}/oh-my-posh/" ${HOME}/.config/
 
 # install mac apps if this is a macos
-if [ "$(uname)" = "Darwin" ]; then ./scripts/mac_setup.sh; fi
+#if [ "$(uname)" = "Darwin" ]; then ./scripts/mac_setup.sh; fi
+
+# Nix Darwin
+ln -sfn "${PWD}/nix" ${HOME}/.config/
+
+
