@@ -9,9 +9,17 @@ blur = false
 
 option_as_alt = "Both"
 
+
 [font]
-normal.family = "JetBrains Mono"
 size = 18
+normal.family = "JetBrains Mono"
+normal.style = "Regular"
+bold.family = "JetBrains Mono"
+bold.style = "Bold"
+italic.family = "JetBrains Mono"
+italic.style = "Italic"
+bold_italic.family = "JetBrains Mono"
+bold_italic.style = "Bold Italic"
 
 [cursor]
 blink_interval = 500

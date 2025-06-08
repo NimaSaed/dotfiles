@@ -30,7 +30,6 @@
           pkgs.alacritty
           pkgs.aerospace
           pkgs.brave
-          pkgs.nerd-fonts.jetbrains-mono
           pkgs.logseq
           pkgs.teams
           pkgs.monitorcontrol
@@ -41,6 +40,10 @@
           pkgs.openfga-cli
           pkgs.mkalias
         ];
+
+      fonts.packages = [
+        pkgs.nerd-fonts.jetbrains-mono
+      ];
 
       homebrew = {
         enable = true;
