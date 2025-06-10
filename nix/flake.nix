@@ -31,7 +31,7 @@
           pkgs.aerospace
           pkgs.brave
           pkgs.logseq
-          pkgs.teams
+          #pkgs.teams
           pkgs.monitorcontrol
           pkgs.openscad
           pkgs.slack
@@ -61,6 +61,7 @@
           "font-jetbrains-mono"
           "bambu-studio"
           "qflipper"
+          "microsoft-teams"
         ];
         masApps = {
           "ikea desk remote" = 1509037746;
