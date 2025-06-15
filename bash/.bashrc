@@ -14,10 +14,10 @@ if [ -x "$(command -v op)" ] && [ -f "~/.config/op/plugins.sh" ]; then source ~/
 eval "$(fzf --bash)"
 # Preview file content using bat (https://github.com/sharkdp/bat)
 
-export FZF_CTRL_T_OPTS="
-  --walker-skip .git,node_modules,target,.terraform
-  --preview 'bat -n --color=always {}'
-  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
+#export FZF_CTRL_T_OPTS="
+#  --walker-skip .git,node_modules,target,.terraform
+#  --preview 'bat -n --color=always {}'
+#  --bind 'ctrl-/:change-preview-window(down|hidden|)'"
 
 _fzf_comprun() {
   local command=$1
